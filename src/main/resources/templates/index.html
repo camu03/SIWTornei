@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SIW Tornei - Homepage</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .menu-container { margin-top: 30px; }
+        .bottone { 
+            display: inline-block; padding: 10px 20px; margin: 10px; 
+            background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; 
+        }
+        .bottone:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <h1>Benvenuto nel Portale dei Tornei!</h1>
+    <p>Scegli un'opzione per iniziare la navigazione:</p>
+
+    <div class="menu-container">
+        <h2>Area Pubblica</h2>
+        
+        <a th:href="@{/tornei}" class="bottone">Visualizza tutti i Tornei</a>
+        
+        <hr>
+
+        <h2>Area Amministratore</h2>
+        
+        <a th:href="@{/admin/torneo/new}" class="bottone">Crea Nuovo Torneo</a>
+        
+        <a th:href="@{/arbitri}" class="bottone">Gestione Arbitri</a>
+    </div>
+
+</body>
+</html>

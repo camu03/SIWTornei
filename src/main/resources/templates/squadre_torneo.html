@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Squadre - <span th:text="${torneo.nome}">Torneo</span></title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .squadra-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .indietro { display: block; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>Squadre iscritte a: <span th:text="${torneo.nome}">Nome Torneo</span></h1>
+
+    <div th:if="${squadre.isEmpty()}">
+        <p>Non ci sono ancora squadre iscritte a questo torneo.</p>
+    </div>
+
+    <div th:unless="${squadre.isEmpty()}">
+        <div th:each="squadra : ${squadre}" class="squadra-card">
+            
+            <h2>
+                <a th:href="@{/squadra/{id}(id=${squadra.id})}" th:text="${squadra.nome}">Nome Squadra</a>
+            </h2>
+            
+            </div>
+    </div>
+
+    <a th:href="@{/torneo/{id}(id=${torneo.id})}" class="indietro">Torna al Torneo</a>
+
+</body>
+</html> 
