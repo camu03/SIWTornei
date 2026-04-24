@@ -2,6 +2,9 @@ package it.uniroma3.siw.siwtornei.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Partita {
@@ -11,6 +14,7 @@ public class Partita {
     private Long id;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dataOra;
     @Column(nullable = false)
     private String luogo;
@@ -29,6 +33,9 @@ public class Partita {
     private Squadra squadraAway;
     @ManyToOne
     private Arbitro arbitro;
+    @OneToMany(mappedBy = "partita", cascade = CascadeType.ALL)
+    private List<Commento> commenti = new ArrayList<>();
+
 
     public Partita() {
     }
@@ -53,5 +60,7 @@ public class Partita {
     public void setSquadraAway(Squadra squadraAway) { this.squadraAway = squadraAway; }
     public Arbitro getArbitro() { return arbitro; }
     public void setArbitro(Arbitro arbitro) { this.arbitro = arbitro; }
+    public List<Commento> getCommenti() { return commenti; }
+    public void setCommenti(List<Commento> commenti) { this.commenti = commenti; }
     
 }

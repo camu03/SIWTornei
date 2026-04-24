@@ -42,7 +42,11 @@
             </div>
 
             <div th:unless="${partita.stato.name() == 'PLAYED'}" class="data">
-                In programma il: <span th:text="${partita.dataOra}">01/01/2026 15:00</span>
+                In programma il: <span th:text="${#temporals.format(partita.dataOra, 'dd/MM/yyyy HH:mm')}">01/01/2026 15:00</span>
+            </div>
+
+            <div style="color: #666; font-size: 0.9em; margin-top: 5px;">
+                📍 Stadio/Campo: <span th:text="${partita.luogo}">Nome Stadio</span>
             </div>
 
             <a th:href="@{/partita/{id}(id=${partita.id})}" class="dettagli-link">Vai al Match Center &rarr;</a>

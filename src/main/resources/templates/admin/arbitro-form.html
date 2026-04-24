@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modulo Arbitro</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 400px; }
+        h2 { color: #333; margin-bottom: 20px; border-bottom: 2px solid #ffc107; padding-bottom: 10px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2 th:text="${arbitro.id == null ? 'Inserisci Nuovo Arbitro' : 'Modifica Arbitro'}">Inserisci Nuovo Arbitro</h2>
+        
+        <form th:action="@{/admin/arbitri/salva}" method="POST" th:object="${arbitro}">
+            
+            <input type="hidden" th:field="*{id}">
+            
+            <div class="input-group">
+                <label>Nome</label>
+                <input type="text" th:field="*{nome}" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Cognome</label>
+                <input type="text" th:field="*{cognome}" required>
+            </div>
+
+            <div class="input-group">
+                <label>Codice Arbitrale</label>
+                <input type="text" th:field="*{codiceArbitrale}" required>
+            </div>
+
+            <button type="submit">Salva Arbitro</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 20px;">
+            <a th:href="@{/admin/arbitri}" style="color: #6c757d; text-decoration: none;">&larr; Annulla</a>
+        </p>
+    </div>
+
+</body>
+</html>

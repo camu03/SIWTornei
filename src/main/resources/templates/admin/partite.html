@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Partite - Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #ffc107; color: #000; }
+        .btn { padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block; }
+        .btn-add { background-color: #28a745; color: white; margin-bottom: 15px; }
+        .btn-edit { background-color: #007bff; color: white; padding: 5px 10px; font-size: 14px; }
+        .btn-del { background-color: #dc3545; color: white; padding: 5px 10px; font-size: 14px; border: none; cursor: pointer; }
+        .azioni-container { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .azioni-container form { margin: 0; }
+        .score { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestione Partite</h1>
+        
+        <a th:href="@{/admin/partite/nuova}" class="btn btn-add">+ Aggiungi Nuova Partita</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data e Ora</th>
+                    <th>Torneo</th>
+                    <th>Squadra Home</th>
+                    <th>Risultato</th>
+                    <th>Squadra Away</th>
+                    <th>Stato</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="partita : ${partite}">
+                    <td th:text="${#temporals.format(partita.dataOra, 'dd/MM/yyyy HH:mm')}">Data</td>
+                    <td th:text="${partita.torneo != null ? partita.torneo.nome : '-'}">Torneo</td>
+                    <td th:text="${partita.squadraHome != null ? partita.squadraHome.nome : '-'}">Home</td>
+                    <td class="score">
+                        <span th:text="${partita.golHome != null ? partita.golHome : '0'}"></span> : 
+                        <span th:text="${partita.golAway != null ? partita.golAway : '0'}"></span>
+                    </td>
+                    <td th:text="${partita.squadraAway != null ? partita.squadraAway.nome : '-'}">Away</td>
+                    <td th:text="${partita.stato}">Stato</td>
+                    <td>
+                        <div class="azioni-container">
+                            <a th:href="@{/admin/partite/modifica/{id}(id=${partita.id})}" class="btn btn-edit">Modifica</a>
+                            <form th:action="@{/admin/partite/{id}/delete(id=${partita.id})}" method="post"
+                                  onsubmit="return confirm('Sicuro di voler eliminare questa partita?');">
+                                <button type="submit" class="btn btn-del">Elimina</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 30px; text-align: left;">
+            <a th:href="@{/admin/dashboard}" style="color: #6c757d; text-decoration: none;">&larr; Torna alla Dashboard</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,35 +1,46 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>SIW Tornei - Homepage</title>
+    <title>SIW Tornei - Home</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .menu-container { margin-top: 30px; }
-        .bottone { 
-            display: inline-block; padding: 10px 20px; margin: 10px; 
-            background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; 
-        }
-        .bottone:hover { background-color: #0056b3; }
+        /* CSS per il tasto in alto a destra */
+        .top-bar { position: absolute; top: 20px; right: 20px; }
+        .btn-auth { padding: 8px 16px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        .btn-login { background-color: #007bff; color: white; }
+        .btn-logout { background-color: #dc3545; color: white; }
+        
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
+        .admin-section { background-color: #fff3cd; border: 1px solid #ffeeba; padding: 20px; margin: 20px auto; width: 50%; border-radius: 10px; }
+        .nav-links a { margin: 0 15px; font-size: 18px; color: #007bff; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <h1>Benvenuto nel Portale dei Tornei!</h1>
-    <p>Scegli un'opzione per iniziare la navigazione:</p>
+    <div class="top-bar">
+        <a th:href="@{/login}" class="btn-auth btn-login" sec:authorize="isAnonymous()">Login</a>
+        
+        <span sec:authorize="isAuthenticated()" style="margin-right: 10px;">
+            Benvenuto, <strong sec:authentication="principal.username">User</strong>
+        </span>
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display: inline;">
+    <button type="submit" class="btn-auth btn-logout" style="border: none; cursor: pointer;">
+        Logout
+    </button>
+</form>
+    </div>
 
-    <div class="menu-container">
-        <h2>Area Pubblica</h2>
-        
-        <a th:href="@{/tornei}" class="bottone">Visualizza tutti i Tornei</a>
-        
-        <hr>
+    <h1>Benvenuti nel Portale Tornei</h1>
+    <p>Esplora i tornei amatoriali, le squadre e le classifiche aggiornate in tempo reale.</p>
 
-        <h2>Area Amministratore</h2>
-        
-        <a th:href="@{/admin/torneo/new}" class="bottone">Crea Nuovo Torneo</a>
-        
-        <a th:href="@{/arbitri}" class="bottone">Gestione Arbitri</a>
+    <div class="nav-links">
+        <a th:href="@{/tornei}">Visualizza Tornei</a>
+    </div>
+
+    <div class="admin-section" sec:authorize="hasAuthority('ADMIN')">
+        <h3>Pannello di Gestione</h3>
+        <p>Hai effettuato l'accesso come amministratore. Puoi gestire i tornei e i risultati.</p>
+        <a th:href="@{/admin/dashboard}" style="color: #856404; font-weight: bold;">Accedi alla Dashboard Admin &rarr;</a>
     </div>
 
 </body>

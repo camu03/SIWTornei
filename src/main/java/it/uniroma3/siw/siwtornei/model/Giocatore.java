@@ -2,6 +2,7 @@ package it.uniroma3.siw.siwtornei.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity 
 public class Giocatore {
@@ -15,6 +16,7 @@ public class Giocatore {
     @Column(nullable = false)
     private String cognome;
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataDiNascita;
     @Column(nullable = false)
     private String ruolo;

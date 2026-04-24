@@ -99,5 +99,10 @@ public class TorneoService{
 
         return classifica; 
     }
+
+    @Transactional
+    public void deleteTorneo(long id) {
+        torneoRepository.deleteById(id);
+    }
     
 }

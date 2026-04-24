@@ -16,29 +16,41 @@ public class ArbitroController {
     @Autowired
     private ArbitroService arbitroService;
 
-    @GetMapping("/arbitri")
+    @GetMapping("/admin/arbitri")
     public String showArbitri(Model model) {
         model.addAttribute("arbitri", arbitroService.findAll());
-        return "arbitri"; // Pagina con la lista di tutti gli arbitri
+        return "admin/arbitri"; // Pagina con la lista di tutti gli arbitri
     }
 
-    @GetMapping("/arbitro/{id}")
+    @GetMapping("/admin/arbitro/{id}")
     public String showDettagliArbitro(@PathVariable("id") Long id, Model model) {
         model.addAttribute("arbitro", arbitroService.findById(id));
-        return "arbitro"; // Dettaglio del singolo arbitro
+        return "admin/arbitro"; // Dettaglio del singolo arbitro
     }
 
-    // --- ADMIN (Casi d'uso 4.3) ---
+    // --- FUNZIONALITÀ ADMIN (Casi d'uso 4.3) ---
 
     @GetMapping("/admin/arbitro/new")
     public String formNuovoArbitro(Model model) {
         model.addAttribute("arbitro", new Arbitro());
-        return "admin/formArbitro";
+        return "admin/arbitro-form"; 
+    }
+
+    @GetMapping("/admin/arbitro/modifica/{id}")
+    public String formModificaArbitro(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("arbitro", arbitroService.findById(id));
+        return "admin/arbitro-form";
     }
 
     @PostMapping("/admin/arbitro")
     public String salvaArbitro(@ModelAttribute("arbitro") Arbitro arbitro) {
         arbitroService.saveArbitro(arbitro);
         return "redirect:/arbitri"; // Dopo il salvataggio, torna alla lista
+    }
+
+    @PostMapping("/admin/arbitro/{id}/delete")
+    public String eliminaArbitro(@PathVariable("id") Long id) {
+        arbitroService.deleteArbitro(id);
+        return "redirect:/arbitri"; 
     }
 }

@@ -17,9 +17,9 @@ public class Torneo {
     @Column(nullable = false)
     private String descrizione;
 
-    @ManyToMany(mappedBy = "tornei")
+    @ManyToMany
     private List<Squadra> squadre;
-    @OneToMany(mappedBy = "torneo")
+    @OneToMany(mappedBy = "torneo", cascade = CascadeType.REMOVE)
     private List<Partita> partite;
 
     public Torneo() {

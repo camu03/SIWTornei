@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Dettaglio Partita</title>
@@ -13,12 +13,12 @@
         .risultato { font-size: 3em; color: #ffc107; margin: 15px 0; }
         .info-extra { color: #ccc; font-size: 1.1em; }
         .commenti-section { background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
-        .singolo-commento { border-bottom: 1px solid #ccc; padding: 10px 0; }
+        .singolo-commento { border-bottom: 1px solid #ccc; padding: 15px 0; margin-bottom: 15px; }
         .form-commento { margin-top: 20px; }
         textarea { width: 100%; height: 80px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 10px; }
-        .bottone { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .bottone { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
         .bottone:hover { background-color: #0056b3; }
-        .indietro { display: inline-block; margin-top: 20px; }
+        .indietro { display: inline-block; margin-top: 20px; text-decoration: none; color: #007bff; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -34,10 +34,14 @@
             <span th:text="${partita.golHome}">0</span> : <span th:text="${partita.golAway}">0</span>
         </div>
         <div th:unless="${partita.stato.name() == 'PLAYED'}" class="risultato" style="font-size: 1.5em; color: #17a2b8;">
-            In programma il: <span th:text="${partita.dataOra}">01/01/2026</span>
+            In programma il: <span th:text="${#temporals.format(partita.dataOra, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
         </div>
 
         <div class="info-extra">
+            <span style="margin-right: 20px;">
+                Luogo: <strong th:text="${partita.luogo}">Campo Sportivo</strong>
+            </span>
+
             <span th:if="${partita.arbitro != null}">
                 Arbitro: <strong th:text="${partita.arbitro.nome} + ' ' + ${partita.arbitro.cognome}">Nome Arbitro</strong>
             </span>
@@ -47,18 +51,42 @@
         </div>
     </div>
 
-    <div class="commenti-section">
+    <div class="commenti-section" sec:authorize="isAuthenticated()">
         <h2>Commenti dei tifosi</h2>
 
         <div th:if="${partita.commenti.isEmpty()}">
             <p>Nessun commento per questa partita. Sii il primo a commentare!</p>
         </div>
+        
         <div th:unless="${partita.commenti.isEmpty()}">
             <div th:each="commento : ${partita.commenti}" class="singolo-commento">
+                
                 <p>
-                    <strong>Un tifoso dice:</strong> 
-                    <span th:text="${commento.testo}">Bellissima partita!</span>
+                    <strong th:text="${commento.utente != null ? commento.utente.username : 'Utente anonimo'}">Un tifoso</strong> 
+                    <span style="font-size: 0.85em; color: #888; margin-left: 10px;" 
+                          th:text="${#temporals.format(commento.dataOra, 'dd/MM/yyyy HH:mm')}">
+                          01/01/2026 15:30
+                    </span> 
+                    ha scritto:
                 </p>
+                
+                <p th:text="${commento.testo}" style="margin-top: 5px; font-style: italic;">
+                    Bellissima partita!
+                </p>
+
+                <div style="text-align: right; margin-top: 10px; font-size: 0.9em;">
+                    
+                    <span th:if="${#authentication.name == commento.utente?.username}">
+                        <a th:href="@{/user/commento/{id}/edit(id=${commento.id})}" style="color: #007bff; text-decoration: none; margin-right: 15px;">✏️ Modifica</a>
+                    </span>
+
+                    <span th:if="${#authentication.name == commento.utente?.username or #authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <form th:action="@{/user/commento/{id}/delete(id=${commento.id})}" method="post" style="display: inline;">
+                            <button type="submit" style="background: none; border: none; color: #dc3545; cursor: pointer; text-decoration: none; padding: 0;">🗑️ Elimina</button>
+                        </form>
+                    </span>
+                </div>
+
             </div>
         </div>
 
@@ -70,9 +98,17 @@
                 <button type="submit" class="bottone">Invia Commento</button>
             </form>
         </div>
-        </div>
+    </div>
 
-    <a href="javascript:history.back()" class="indietro">&larr; Torna al calendario</a>
+    <div class="commenti-section" sec:authorize="isAnonymous()">
+        <h2>Commenti dei tifosi</h2>
+        <p>
+            Per leggere i commenti dei tifosi o partecipare alla discussione, 
+            <a th:href="@{/login}" style="color: #007bff; font-weight: bold;">effettua il login</a>.
+        </p>
+    </div>
+
+    <a th:href="@{/torneo/{id}/partite(id=${partita.torneo.id})}" class="indietro">&larr; Torna al calendario</a>
 
 </body>
 </html>

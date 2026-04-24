@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import it.uniroma3.siw.siwtornei.service.ArbitroService;
 import java.util.List;
 import org.springframework.ui.Model;
 
@@ -22,6 +22,8 @@ public class PartitaController {
     private PartitaService partitaService;
     @Autowired
     private TorneoService torneoService;
+    @Autowired
+    private ArbitroService arbitroService; 
 
     @GetMapping("/torneo/{id}/partite")
     public String showPartitePerTorneo(@PathVariable("id") Long id, Model model) {
@@ -43,23 +45,31 @@ public class PartitaController {
         return "partita";
     }
 
-    // Intercetta es: /admin/torneo/1/partita/new
     @GetMapping("/admin/torneo/{torneoId}/partita/new")
     public String formNuovaPartita(@PathVariable("torneoId") Long torneoId, Model model) {
-        
-        // 1. Recuperiamo il torneo per cui stiamo creando la partita
         Torneo torneo = torneoService.findById(torneoId);
-        
-        // 2. Passiamo una Partita "vuota" da riempire
         model.addAttribute("partita", new Partita());
-        
-        // 3. Passiamo il torneo (ci servirà nel form)
         model.addAttribute("torneo", torneo);
-        
-        // 4. Passiamo le squadre di QUESTO torneo per farle selezionare all'admin
         model.addAttribute("squadre", torneo.getSquadre());
         
-        return "admin/formNuovaPartita";
+        // NUOVO: Passa la lista di tutti gli arbitri al form
+        model.addAttribute("arbitri", arbitroService.findAll()); 
+        
+        return "admin/formNuovaPartita"; 
+    }
+
+    @GetMapping("/admin/partita/{id}/edit")
+    public String formModificaPartita(@PathVariable("id") Long id, Model model) {
+        Partita partita = partitaService.findById(id);
+        model.addAttribute("partita", partita);
+        
+        // NUOVO: Passa la lista di tutti gli arbitri al form per farli scegliere/cambiare
+        model.addAttribute("arbitri", arbitroService.findAll()); 
+        
+        // OPZIONALE MA CONSIGLIATO: Passa anche le squadre del torneo in caso volessi cambiarle
+        model.addAttribute("squadre", partita.getTorneo().getSquadre());
+        
+        return "admin/formModificaPartita"; 
     }
 
     @PostMapping("/admin/torneo/{torneoId}/partita")
@@ -79,15 +89,6 @@ public class PartitaController {
         
         // 5. Reindirizziamo l'admin al calendario di questo torneo per fargli vedere la nuova partita!
         return "redirect:/torneo/" + torneoId + "/partite";
-    }
-
-     // Mostra il form per aggiornare una partita esistente (es. inserire il risultato)
-    @GetMapping("/admin/partita/{id}/edit")
-    public String formModificaPartita(@PathVariable("id") Long id, Model model) {
-        Partita partita = partitaService.findById(id);
-        model.addAttribute("partita", partita);
-        // Qui potresti dover passare al Model anche l'elenco degli arbitri per farglielo scegliere!
-        return "admin/formModificaPartita"; 
     }
 
     // L'annotazione @ModelAttribute prende i dati digitati nel form e li trasforma automaticamente in un oggetto Partita

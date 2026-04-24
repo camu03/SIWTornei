@@ -34,4 +34,8 @@ public class CommentoService {
         return commentoRepository.findByPartita(partita);
     }
 
+    @Transactional
+    public void deleteCommento(Commento commento) {
+        commentoRepository.delete(commento);
+    }
 }

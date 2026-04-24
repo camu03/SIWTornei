@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrazione - SIW Tornei</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f7f6; }
+        .reg-container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 400px; }
+        h2 { text-align: center; color: #333; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #666; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        
+        /* Stile per i pallini del ruolo */
+        .role-group { display: flex; justify-content: space-around; margin: 20px 0; padding: 10px; border: 1px dashed #ccc; border-radius: 5px; }
+        .radio-item { display: flex; align-items: center; cursor: pointer; }
+        .radio-item input { margin-right: 8px; cursor: pointer; }
+        
+        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #218838; }
+        .error { color: #dc3545; font-size: 14px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="reg-container">
+        <h2>Crea il tuo Account</h2>
+        
+        <form th:action="@{/registrazione}" method="POST" th:object="${utente}">
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" th:field="*{username}" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" th:field="*{password}" required>
+            </div>
+
+            <label>Seleziona il tuo ruolo:</label>
+            
+            <div th:if="${erroreRuolo}" class="error" th:text="${erroreRuolo}" style="text-align: left; margin-bottom: 5px; font-weight: bold;">
+                Testo di errore
+            </div>
+            
+            <div class="role-group">
+                <div class="radio-item">
+                    <input type="radio" id="roleUser" name="ruolo" value="USER" th:field="*{ruolo}" required>
+                    <label for="roleUser" style="margin: 0;">UTENTE</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="roleAdmin" name="ruolo" value="ADMIN" th:field="*{ruolo}" required>
+                    <label for="roleAdmin" style="margin: 0;">ADMIN</label>
+                </div>
+            </div>
+
+            <button type="submit">Completa Registrazione</button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 20px;">
+            <a th:href="@{/login}" style="color: #007bff; text-decoration: none; font-size: 14px;">Hai già un account? Accedi</a>
+        </p>
+    </div>
+</body>
+</html>

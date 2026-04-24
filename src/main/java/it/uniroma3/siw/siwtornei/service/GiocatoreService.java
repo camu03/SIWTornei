@@ -47,4 +47,9 @@ public class GiocatoreService {
         return giocatoreRepository.findByRuolo(ruolo);
     }
 
+    @Transactional
+    public void deleteGiocatore(long id) {
+        giocatoreRepository.deleteById(id);
+    }
+
 }
