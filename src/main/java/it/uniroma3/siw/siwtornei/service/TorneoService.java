@@ -55,8 +55,11 @@ public class TorneoService{
     @Transactional(readOnly = true)
     public Map<Squadra, Integer> getClassifica(Torneo torneo) {
         Map<Squadra, Integer> mappa = new HashMap<>();
-        for (Squadra s : torneo.getSquadre()) {
-            mappa.put(s, 0);
+        
+        if (torneo.getSquadre() != null) {
+            for (Squadra s : torneo.getSquadre()) {
+                mappa.put(s, 0);
+            }
         }
 
         List<Partita> partiteGiocate = partitaRepository.findByTorneoAndStato(torneo, StatoPartita.PLAYED);
@@ -64,17 +67,23 @@ public class TorneoService{
         for(Partita p : partiteGiocate) {
             Squadra casa = p.getSquadraHome();
             Squadra ospite = p.getSquadraAway();
-            if (p.getGolHome() != null && p.getGolAway() != null) {
-                if(p.getGolHome()>p.getGolAway()){
-                    mappa.put(casa, mappa.get(casa)+3);
-                }else if(p.getGolHome()<p.getGolAway()){
-                    mappa.put(ospite, mappa.get(ospite)+3);
-                }else {
-                    mappa.put(casa, mappa.get(casa)+1);
-                    mappa.put(ospite, mappa.get(ospite)+1);
+            
+            if (casa != null) mappa.putIfAbsent(casa, 0);
+            if (ospite != null) mappa.putIfAbsent(ospite, 0);
+
+            
+            if (p.getGolHome() != null && p.getGolAway() != null && casa != null && ospite != null) {
+                if(p.getGolHome() > p.getGolAway()){
+                    mappa.put(casa, mappa.get(casa) + 3);
+                } else if(p.getGolHome() < p.getGolAway()){
+                    mappa.put(ospite, mappa.get(ospite) + 3);
+                } else {
+                    mappa.put(casa, mappa.get(casa) + 1);
+                    mappa.put(ospite, mappa.get(ospite) + 1);
                 }
             }
         }
+        
         Comparator<Squadra> cmp = new Comparator<Squadra>(){
             @Override
             public int compare(Squadra s1, Squadra s2) {
@@ -83,13 +92,15 @@ public class TorneoService{
                 } else if(mappa.get(s1) < mappa.get(s2)) {
                     return 1;
                 } else {
-                    return s1.getNome().compareTo(s2.getNome());
+                    
+                    String nome1 = s1.getNome() != null ? s1.getNome() : "";
+                    String nome2 = s2.getNome() != null ? s2.getNome() : "";
+                    return nome1.compareTo(nome2);
                 }
             }
         };
 
         List<Squadra> listaSquadre = new ArrayList<>(mappa.keySet());
-
         Collections.sort(listaSquadre, cmp); 
 
         Map<Squadra, Integer> classifica = new LinkedHashMap<>();
@@ -104,5 +115,4 @@ public class TorneoService{
     public void deleteTorneo(long id) {
         torneoRepository.deleteById(id);
     }
-    
 }

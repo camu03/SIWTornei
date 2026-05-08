@@ -20,14 +20,9 @@ public class Squadra {
     @OneToMany(mappedBy = "squadra")
     private List<Giocatore> giocatori;
 
-    @ManyToMany
-    @JoinTable(
-        name = "squadra_torneo",
-        joinColumns = @JoinColumn(name = "squadra_id"),
-        inverseJoinColumns = @JoinColumn(name = "torneo_id")
-    )
+    @ManyToMany(mappedBy = "squadre")
     private List<Torneo> tornei;
-
+        
     public Squadra(){
 
     }

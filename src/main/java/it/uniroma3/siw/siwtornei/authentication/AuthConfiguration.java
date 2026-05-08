@@ -8,22 +8,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-// Importiamo la tua classe handler creata in precedenza
-import it.uniroma3.siw.siwtornei.controller.UrlAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class AuthConfiguration {
 
-    // HO RIMOSSO L'AUTOWIRED CHE CAUSAVA IL CRASH!
-
     @Bean
     protected SecurityFilterChain configure(final HttpSecurity http) throws Exception {
+
+        
+        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        successHandler.setTargetUrlParameter("redirect");
+        successHandler.setDefaultTargetUrl("/");
+
         http
             .authorizeHttpRequests(authorize -> authorize
                 // 1. Pagine pubbliche accessibili a tutti
-                .requestMatchers(HttpMethod.GET, "/", "/index", "/tornei", "/torneo/**","/squadre", "/squadra/**", "/partite", "/partita/**","/arbitri","/arbitro/**","/giocatore/**", "/classifica/**", "/registrazione", "/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/", "/index", "/tornei", "/torneo/**", "/api/**", "/squadre", "/squadra/**", "/partite", "/partita/**","/arbitri","/arbitro/**","/giocatore/**", "/classifica/**", "/registrazione", "/login", "/js/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/registrazione", "/login").permitAll()
                 
                 // 2. Risorse statiche e PAGINA DI ERRORE
@@ -39,8 +42,7 @@ public class AuthConfiguration {
             // Configurazione del Login
             .formLogin(form -> form
                 .loginPage("/login")
-                // CREIAMO L'OGGETTO DIRETTAMENTE QUI: Problema risolto!
-                .successHandler(new UrlAuthenticationSuccessHandler())
+                .successHandler(successHandler)
                 .failureUrl("/login?error=true")
                 .permitAll()
             )

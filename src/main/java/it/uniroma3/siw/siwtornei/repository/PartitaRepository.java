@@ -13,4 +13,5 @@ List<Partita> findByTorneo(Torneo torneo);
 // Trova le partite di un torneo filtrate per stato (utile per la classifica)
 List<Partita> findByTorneoAndStato(Torneo torneo, StatoPartita stato);
 List<Partita> findByTorneoOrderByDataOraAsc(Torneo torneo);
+List<Partita> findByTorneoOrderByDataOraDesc(Torneo torneo);
 }

@@ -3,59 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Calendario - <span th:text="${torneo.nome}">Torneo</span></title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .partita-card { 
-            border: 1px solid #ddd; 
-            padding: 15px; 
-            margin-bottom: 15px; 
-            border-radius: 5px; 
-            background-color: #f9f9f9;
-        }
-        .squadre { font-size: 1.2em; font-weight: bold; color: #333; }
-        .risultato { font-size: 1.5em; color: #d9534f; margin: 10px 0; font-weight: bold; }
-        .data { color: #555; font-style: italic; }
-        .dettagli-link { display: inline-block; margin-top: 10px; font-size: 0.9em; }
-        .indietro { display: block; margin-top: 20px; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
+<body class="listing-page">
 
-    <h1>Calendario Partite: <span th:text="${torneo.nome}">Nome Torneo</span></h1>
+    <div th:replace="~{fragments :: navbar}"></div>
 
-    <div th:if="${partite.isEmpty()}">
-        <p>Il calendario per questo torneo non è ancora stato stilato.</p>
+    <div class="hero listing-hero">
+        <h1>Calendario Partite: <span th:text="${torneo.nome}">Nome Torneo</span></h1>
+        <p>Tutti gli incontri del torneo, con risultati e dettagli aggiornati.</p>
     </div>
 
-    <div th:unless="${partite.isEmpty()}">
+    <div class="container listing-container">
+
+        <!--tasto per ordinare per data crescente-->
+        <a th:href="@{|/torneo/${torneo.id}/partite?sortByDateAsc=true|}" class="btn-primary">Ordina per Data Asc</a>
+        <!--tasto per ordinare per data decrescente-->
+        <a th:href="@{|/torneo/${torneo.id}/partite?sortByDateDesc=true|}" class="btn-primary">Ordina per Data Desc</a> 
+        <!--tasto per resettare l'ordinamento-->
+        <a th:href="@{|/torneo/${torneo.id}/partite|}" class="btn btn-secondary">Reset Ordinamento</a>
         
-        <div th:each="partita : ${partite}" class="partita-card">
-            
-            <div class="squadre">
-                <span th:text="${partita.squadraHome.nome}">Squadra Casa</span> 
-                vs 
-                <span th:text="${partita.squadraAway.nome}">Squadra Trasferta</span>
-            </div>
-
-            <div th:if="${partita.stato.name() == 'PLAYED'}" class="risultato">
-                <span th:text="${partita.golHome}">0</span> - <span th:text="${partita.golAway}">0</span>
-            </div>
-
-            <div th:unless="${partita.stato.name() == 'PLAYED'}" class="data">
-                In programma il: <span th:text="${#temporals.format(partita.dataOra, 'dd/MM/yyyy HH:mm')}">01/01/2026 15:00</span>
-            </div>
-
-            <div style="color: #666; font-size: 0.9em; margin-top: 5px;">
-                📍 Stadio/Campo: <span th:text="${partita.luogo}">Nome Stadio</span>
-            </div>
-
-            <a th:href="@{/partita/{id}(id=${partita.id})}" class="dettagli-link">Vai al Match Center &rarr;</a>
-
+        <div th:if="${partite.isEmpty()}">
+            <p class="empty-state">Il calendario per questo torneo non è ancora stato stilato.</p>
         </div>
-        
-    </div>
 
-    <a th:href="@{/torneo/{id}(id=${torneo.id})}" class="indietro">Torna al Torneo</a>
+        <div th:unless="${partite.isEmpty()}">
+            <div th:each="partita : ${partite}" class="card listing-card">
+                <div class="listing-title squadre">
+                    <span th:text="${partita.squadraHome.nome}">Squadra Casa</span> 
+                    vs 
+                    <span th:text="${partita.squadraAway.nome}">Squadra Trasferta</span>
+                </div>
+
+                <div th:if="${partita.stato.name() == 'PLAYED'}" class="listing-result">
+                    <span th:text="${partita.golHome}">0</span> - <span th:text="${partita.golAway}">0</span>
+                </div>
+
+                <div class="listing-date">
+                    <span th:if="${partita.stato.name() == 'PLAYED'}">Giocata il: </span>
+                    <span th:unless="${partita.stato.name() == 'PLAYED'}">In programma il: </span>
+                    <span th:text="${#temporals.format(partita.dataOra, 'dd/MM/yyyy HH:mm')}">01/01/2026 15:00</span>
+                </div>
+
+                <div class="listing-meta">
+                    📍 Stadio/Campo: <span th:text="${partita.luogo}">Nome Stadio</span>
+                </div>
+
+                <a th:href="@{/partita/{id}(id=${partita.id})}" class="listing-link">Vai al Match Center &rarr;</a>
+            </div>
+        </div>
+
+        <a th:href="@{/torneo/{id}(id=${torneo.id})}" class="back-link">Torna al Torneo</a>
+    </div>
 
 </body>
 </html>

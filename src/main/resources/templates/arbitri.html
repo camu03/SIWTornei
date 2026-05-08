@@ -3,32 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>I Nostri Arbitri - SIW Tornei</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        .arbitro-card { 
-            border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; 
-            border-radius: 8px; display: flex; justify-content: space-between; align-items: center;
-        }
-        .nome-arbitro { font-size: 1.2em; font-weight: bold; color: #333; }
-        .link-dettaglio { color: #007bff; text-decoration: none; }
-        .indietro { margin-top: 20px; display: inline-block; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
-    <h1>I Direttori di Gara</h1>
-    <p>Ecco gli arbitri ufficiali che partecipano ai nostri tornei.</p>
+<body class="listing-page">
 
-    <div th:if="${arbitri.isEmpty()}">
-        <p>Al momento non ci sono arbitri registrati nel sistema.</p>
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="hero listing-hero">
+        <h1>I Direttori di Gara</h1>
+        <p>Ecco gli arbitri ufficiali che partecipano ai nostri tornei.</p>
     </div>
 
-    <div th:each="arbitro : ${arbitri}" class="arbitro-card">
-        <div>
-            <span class="nome-arbitro" th:text="${arbitro.nome} + ' ' + ${arbitro.cognome}">Nome Cognome</span>
+    <div class="container listing-container">
+        <div th:if="${arbitri.isEmpty()}">
+            <p class="empty-state">Al momento non ci sono arbitri registrati nel sistema.</p>
         </div>
-        <a class="link-dettaglio" th:href="@{/arbitro/{id}(id=${arbitro.id})}">Vedi Profilo &rarr;</a>
-    </div>
 
-    <a th:href="@{/}" class="indietro">&larr; Torna alla Home</a>
+        <div th:each="arbitro : ${arbitri}" class="card listing-card">
+            <div>
+                <span class="listing-title" th:text="${arbitro.nome} + ' ' + ${arbitro.cognome}">Nome Cognome</span>
+            </div>
+            <a class="listing-link" th:href="@{/arbitro/{id}(id=${arbitro.id})}">Vedi Profilo &rarr;</a>
+        </div>
+
+        <a th:href="@{/}" class="back-link">&larr; Torna alla Home</a>
+    </div>
 </body>
 </html>

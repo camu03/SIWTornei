@@ -3,35 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${torneo.nome}">Dettaglio Torneo</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .info-box { border: 1px solid #ccc; padding: 20px; width: 50%; margin: 0 auto; border-radius: 8px; }
-        .bottone { 
-            display: inline-block; padding: 10px 20px; margin: 10px; 
-            background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; 
-        }
-        .bottone:hover { background-color: #218838; }
-        .indietro { margin-top: 30px; display: inline-block; color: #007bff; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
+<body class="torneo-page">
 
-    <h1 th:text="${torneo.nome}">Nome del Torneo</h1>
-    
-    <div class="info-box">
-        <p><strong>Anno:</strong> <span th:text="${torneo.anno}">2026</span></p>
-        <p th:text="${torneo.descrizione}">Descrizione del torneo</p>
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="hero torneo-hero">
+        <h1 th:text="${torneo.nome}">Nome del Torneo</h1>
+        <p>Dettagli, squadre partecipanti, calendario e classifica.</p>
     </div>
 
-    <h2>Esplora il Torneo:</h2>
-    
-    <div>
-        <a th:href="@{/torneo/{id}/squadre(id=${torneo.id})}" class="bottone">Squadre Partecipanti</a>
-        <a th:href="@{/torneo/{id}/partite(id=${torneo.id})}" class="bottone">Calendario e Risultati</a>
-        <a th:href="@{/torneo/{id}/classifica(id=${torneo.id})}" class="bottone">Classifica</a>
-    </div>
+    <div class="container torneo-container" style="text-align: center;">
 
-    <a th:href="@{/tornei}" class="indietro">Torna alla lista dei tornei</a>
+        <div class="card torneo-card" style="max-width: 600px; margin: 0 auto; text-align: left; padding: 30px;">
+            
+            <p><strong>Edizione:</strong> <span th:text="${torneo.anno}">2026</span></p>
+            <p><em th:text="${torneo.descrizione}">Descrizione del torneo</em></p>
+        </div>
+
+        <h2 style="margin-top: 40px; border: none;">Esplora il Torneo:</h2>
+
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+            <a th:href="@{/torneo/{id}/squadre(id=${torneo.id})}" class="btn btn-dark btn-lg">Squadre Partecipanti</a>
+            <a th:href="@{/torneo/{id}/partite(id=${torneo.id})}" class="btn btn-dark btn-lg">Calendario e Risultati</a>
+            <a th:href="@{/torneo/{id}/classifica(id=${torneo.id})}" class="btn btn-dark btn-lg">Classifica</a>
+        </div>  
+
+        <p style="margin-top: 40px;">
+            <a th:href="@{/tornei}" class="back-link">&larr; Torna alla lista dei tornei</a>
+        </p>
+    </div>
 
 </body>
 </html>

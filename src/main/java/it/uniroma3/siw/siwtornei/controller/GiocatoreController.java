@@ -51,7 +51,7 @@ public class GiocatoreController {
     public String formModificaGiocatore(@PathVariable("id") Long id, Model model) {
         Giocatore giocatore = giocatoreService.findById(id);
         model.addAttribute("giocatore", giocatore);
-        return "admin/formGiocatore";
+        return "admin/giocatore-form"; 
     }
 
     @PostMapping("/admin/giocatore/{id}")

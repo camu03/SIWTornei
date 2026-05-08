@@ -3,20 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Modulo Partita</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
-        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 600px; max-width: 100%; }
-        h2 { color: #333; margin-bottom: 20px; border-bottom: 2px solid #ffc107; padding-bottom: 10px; }
-        .input-group { margin-bottom: 15px; }
-        .flex-group { display: flex; gap: 15px; }
-        .flex-group .input-group { flex: 1; }
-        label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; font-size: 14px; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; font-weight: bold; }
-        button:hover { background-color: #218838; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+
+    <div th:replace="~{fragments :: navbar}"></div>
 
     <div class="form-container">
         <h2 th:text="${partita.id == null ? 'Inserisci Nuova Partita' : 'Modifica Partita'}">Partita</h2>
@@ -38,7 +29,7 @@
             <div class="flex-group">
                 <div class="input-group">
                     <label>Torneo</label>
-                    <select th:field="*{torneo}" required>
+                    <select id="torneoSelect" th:field="*{torneo}" required>
                         <option value="">-- Seleziona torneo --</option>
                         <option th:each="t : ${tornei}" th:value="${t.id}" th:text="${t.nome}"></option>
                     </select>
@@ -55,15 +46,15 @@
             <div class="flex-group">
                 <div class="input-group">
                     <label>Squadra Home</label>
-                    <select th:field="*{squadraHome}" required>
-                        <option value="">-- Squadra Home --</option>
+                    <select id="squadraHomeSelect" th:field="*{squadraHome}" required>
+                        <option value="">-- Seleziona prima il torneo --</option>
                         <option th:each="s : ${squadre}" th:value="${s.id}" th:text="${s.nome}"></option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label>Squadra Away</label>
-                    <select th:field="*{squadraAway}" required>
-                        <option value="">-- Squadra Away --</option>
+                    <select id="squadraAwaySelect" th:field="*{squadraAway}" required>
+                        <option value="">-- Seleziona prima il torneo --</option>
                         <option th:each="s : ${squadre}" th:value="${s.id}" th:text="${s.nome}"></option>
                     </select>
                 </div>
@@ -72,11 +63,11 @@
             <div class="flex-group">
                 <div class="input-group">
                     <label>Gol Home</label>
-                    <input type="number" th:field="*{golHome}" min="0" required>
+                    <input type="number" th:field="*{golHome}" min="0">
                 </div>
                 <div class="input-group">
                     <label>Gol Away</label>
-                    <input type="number" th:field="*{golAway}" min="0" required>
+                    <input type="number" th:field="*{golAway}" min="0">
                 </div>
             </div>
 
@@ -98,6 +89,58 @@
             <a th:href="@{/admin/partite}" style="color: #6c757d; text-decoration: none;">&larr; Annulla</a>
         </p>
     </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.addEventListener('DOMContentLoaded', function() {
+            const torneoSelect = document.getElementById('torneoSelect');
+            const squadraHomeSelect = document.getElementById('squadraHomeSelect');
+            const squadraAwaySelect = document.getElementById('squadraAwaySelect');
+
+            // ID delle squadre già selezionate (se stiamo modificando una partita esistente)
+            const selectedHomeId = /*[[${partita.squadraHome != null ? partita.squadraHome.id : null}]]*/ null;
+            const selectedAwayId = /*[[${partita.squadraAway != null ? partita.squadraAway.id : null}]]*/ null;
+
+            function aggiornaSquadreDaTorneo() {
+                const torneoId = torneoSelect.value;
+                
+                if (!torneoId) {
+                    squadraHomeSelect.innerHTML = '<option value="">-- Seleziona prima un torneo --</option>';
+                    squadraAwaySelect.innerHTML = '<option value="">-- Seleziona prima un torneo --</option>';
+                    return;
+                }
+
+                // Chiama il nostro RestController!
+                fetch('/api/tornei/' + torneoId + '/squadre')
+                    .then(response => response.json())
+                    .then(squadreDelTorneo => {
+                        let htmlHome = '<option value="">-- Squadra Home --</option>';
+                        let htmlAway = '<option value="">-- Squadra Away --</option>';
+
+                        squadreDelTorneo.forEach(s => {
+                            const isHome = (s.id === selectedHomeId) ? 'selected' : '';
+                            const isAway = (s.id === selectedAwayId) ? 'selected' : '';
+                            
+                            htmlHome += `<option value="${s.id}" ${isHome}>${s.nome}</option>`;
+                            htmlAway += `<option value="${s.id}" ${isAway}>${s.nome}</option>`;
+                        });
+
+                        squadraHomeSelect.innerHTML = htmlHome;
+                        squadraAwaySelect.innerHTML = htmlAway;
+                    })
+                    .catch(error => console.error("Errore AJAX squadre:", error));
+            }
+
+            // Ascolta quando l'admin cambia il torneo dal menu a tendina
+            torneoSelect.addEventListener('change', aggiornaSquadreDaTorneo);
+
+            // Se la pagina si carica e c'è già un torneo selezionato (es. in fase di modifica), filtra subito le squadre
+            if (torneoSelect.value) {
+                aggiornaSquadreDaTorneo();
+            }
+        });
+        /*]]>*/
+    </script>
 
 </body>
 </html>

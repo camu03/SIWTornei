@@ -3,21 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestione Tornei - Admin</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #ffc107; color: #000; }
-        .btn { padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block; }
-        .btn-add { background-color: #28a745; color: white; margin-bottom: 15px; }
-        .btn-edit { background-color: #007bff; color: white; padding: 5px 10px; font-size: 14px; }
-        .btn-del { background-color: #dc3545; color: white; padding: 5px 10px; font-size: 14px; border: none; cursor: pointer; }
-        .azioni-container { display: flex; align-items: center; gap: 8px; }
-        .azioni-container form { margin: 0; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+
+    <div th:replace="~{fragments :: navbar}"></div>
 
     <div class="container">
         <h1>Gestione Tornei</h1>
@@ -36,8 +26,7 @@
                 <tr th:each="torneo : ${tornei}">
                     <td th:text="${torneo.nome}">Coppa Invernale</td>
                     <td th:text="${torneo.anno}">2026</td>
-                    <td>
-                        <div class="azioni-container">
+                    <td style="text-align: right;"><div class="azioni-container">
                             <a th:href="@{/admin/tornei/modifica/{id}(id=${torneo.id})}" class="btn btn-edit">Modifica</a>
                             <form th:action="@{/admin/tornei/{id}/delete(id=${torneo.id})}" method="post"
                                   onsubmit="return confirm('Sicuro di voler eliminare questo torneo?');">
@@ -50,9 +39,10 @@
         </table>
 
         <p style="margin-top: 30px;">
-            <a th:href="@{/admin/dashboard}" style="color: #6c757d; text-decoration: none;">&larr; Torna alla Dashboard</a>
+            <a th:href="@{/admin/dashboard}" class="back-link">&larr; Torna alla Dashboard</a>
         </p>
     </div>
 
 </body>
 </html>
+

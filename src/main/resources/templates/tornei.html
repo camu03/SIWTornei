@@ -2,43 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Elenco Tornei</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .torneo-card { 
-            border: 1px solid #ccc; 
-            padding: 20px; 
-            width: 50%; 
-            margin: 15px auto; 
-            border-radius: 8px; 
-            text-align: left; 
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-        }
-        .titolo-torneo { font-size: 24px; color: #007bff; text-decoration: none; font-weight: bold; }
-        .titolo-torneo:hover { text-decoration: underline; }
-        .indietro { display: block; margin-top: 30px; color: #6c757d; text-decoration: none; }
-    </style>
+    <title>Elenco Tornei (React)</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body>
+<body class="home-page">
+    
+    <div th:replace="~{fragments :: navbar}"></div>
 
-    <h1>Tornei Disponibili</h1>
-
-    <div th:if="${tornei.isEmpty()}">
-        <p>Al momento non ci sono tornei in programma. Torna a trovarci presto!</p>
+    <div class="hero">
+        <h1>Tornei Disponibili</h1>
+        <p>Esplora i tornei attivi.</p>
     </div>
 
-    <div th:unless="${tornei.isEmpty()}">
-        <div th:each="torneo : ${tornei}" class="torneo-card">
-            
-            <a th:href="@{/torneo/{id}(id=${torneo.id})}" th:text="${torneo.nome}" class="titolo-torneo">Nome Torneo</a>
-            
-            <p><strong>Edizione:</strong> <span th:text="${torneo.anno}">2026</span></p>
-            <p><em th:text="${torneo.descrizione}">Descrizione del torneo</em></p>
-            
-        </div>
+    <div class="container home-intro tournaments-list" style="text-align: center;">
+        <h2 class="home-section-title" style="border: none;">Lista Tornei</h2>
+
+        <div id="react-app-root">Caricamento tornei...</div>
+
+        <a th:href="@{/}" class="back-link">← Torna alla Home Page</a>
     </div>
 
-    <a th:href="@{/}" class="indietro">← Torna alla Home Page</a>
+    <script type="text/babel" th:src="@{/js/tornei-react.js}"></script>
 
 </body>
 </html>

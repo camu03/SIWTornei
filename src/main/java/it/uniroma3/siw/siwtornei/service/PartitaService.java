@@ -37,7 +37,17 @@ public class PartitaService {
 
     @Transactional(readOnly = true)
     public List<Partita> findByTorneo(Torneo torneo) {
+        return partitaRepository.findByTorneo(torneo);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Partita> findByTorneoOrderByDataOraAsc(Torneo torneo) {
         return partitaRepository.findByTorneoOrderByDataOraAsc(torneo);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Partita> findByTorneoOrderByDataOraDesc(Torneo torneo) {
+        return partitaRepository.findByTorneoOrderByDataOraDesc(torneo);
     }
 
     //elimina

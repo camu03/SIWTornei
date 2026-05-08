@@ -3,18 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Modulo Giocatore</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
-        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 400px; max-width: 100%; }
-        h2 { color: #333; margin-bottom: 20px; border-bottom: 2px solid #ffc107; padding-bottom: 10px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; font-size: 14px; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; font-weight: bold; }
-        button:hover { background-color: #218838; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+
+    <div th:replace="~{fragments :: navbar}"></div>
 
     <div class="form-container">
         <h2 th:text="${giocatore.id == null ? 'Inserisci Nuovo Giocatore' : 'Modifica Giocatore'}">Giocatore</h2>
@@ -39,7 +32,13 @@
 
             <div class="input-group">
                 <label>Ruolo</label>
-                <input type="text" th:field="*{ruolo}" required placeholder="es. Attaccante, Playmaker...">
+                <select th:field="*{ruolo}" required>
+                    <option value="">-- Seleziona Ruolo --</option>
+                    <option value="PORTIERE">Portiere</option>
+                    <option value="DIFENSORE">Difensore</option>
+                    <option value="CENTROCAMPISTA">Centrocampista</option>
+                    <option value="ATTACCANTE">Attaccante</option>
+                </select>
             </div>
 
             <div class="input-group">

@@ -2,46 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Classifica - <span th:text="${torneo.nome}">Torneo</span></title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { width: 60%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        .posizione { width: 50px; font-weight: bold; }
-        .punti { font-weight: bold; color: #d9534f; }
-        .indietro { display: block; margin-top: 20px; }
-    </style>
+    <title>Classifica - SIW Tornei</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
+<body class="classifica-page">
 
-    <h1>Classifica: <span th:text="${torneo.nome}">Nome Torneo</span></h1>
+    <div th:replace="~{fragments :: navbar}"></div>
 
-    <table>
-        <thead>
-            <tr>
-                <th class="posizione">#</th>
-                <th>Squadra</th>
-                <th>Punti Totali</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="entry, iterStat : ${classifica}">
-                <td class="posizione" th:text="${iterStat.count}">1</td>
-                <td>
-                    <a th:href="@{/squadra/{id}(id=${entry.key.id})}" th:text="${entry.key.nome}">Nome Squadra</a>
-                </td>
-                <td class="punti" th:text="${entry.value}">0</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div th:if="${classifica.isEmpty()}">
-        <p>Nessun dato disponibile per la classifica.</p>
+    <div class="hero">
+        <h1>Classifica: <span th:text="${torneo.nome}">Nome Torneo</span></h1>
+        <p>Consulta la graduatoria aggiornata del torneo.</p>
     </div>
 
-    <a th:href="@{/torneo/{id}(id=${torneo.id})}" class="indietro">Torna al Torneo</a>
+    <div class="container classifica-container" style="text-align: center;">
+        <div th:if="${classifica.isEmpty()}">
+            <p class="empty-state">Nessun dato disponibile per la classifica.</p>
+        </div>
+
+        <table th:unless="${classifica.isEmpty()}" class="classifica-table">
+            <thead>
+                <tr>
+                    <th class="posizione">#</th>
+                    <th>Squadra</th>
+                    <th>Punti Totali</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry, iterStat : ${classifica}">
+                    <td class="posizione" th:text="${iterStat.count}">1</td>
+                    <td>
+                        <a th:href="@{/squadra/{id}(id=${entry.key.id})}" th:text="${entry.key.nome}">Nome Squadra</a>
+                    </td>
+                    <td class="punti" th:text="${entry.value}">0</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a th:href="@{/torneo/{id}(id=${torneo.id})}" class="back-link">Torna al Torneo</a>
+    </div>
 
 </body>
 </html>

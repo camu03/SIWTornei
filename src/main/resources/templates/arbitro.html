@@ -3,23 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Profilo Arbitro</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .profilo-box { border: 1px solid #333; padding: 25px; border-radius: 10px; background-color: #f9f9f9; width: fit-content; }
-        .etichetta { font-weight: bold; color: #555; }
-        .valore { font-size: 1.1em; margin-bottom: 10px; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
-    <h1>Scheda Arbitro</h1>
+<body class="player-page">
 
-    <div class="profilo-box">
-        <div class="valore"><span class="etichetta">Nome:</span> <span th:text="${arbitro.nome}">Mario</span></div>
-        <div class="valore"><span class="etichetta">Cognome:</span> <span th:text="${arbitro.cognome}">Rossi</span></div>
-        <div class="valore"><span class="etichetta">Codice Arbitrale:</span> <span th:text="${arbitro.codiceArbitrale}">A123BC</span></div>
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="container player-container" style="text-align: left;">
+        <h1 class="player-title">Scheda Arbitro</h1>
+
+        <div class="info-riga"><span class="label">Nome:</span> <span th:text="${arbitro.nome}">Mario</span></div>
+        <div class="info-riga"><span class="label">Cognome:</span> <span th:text="${arbitro.cognome}">Rossi</span></div>
+        <div class="info-riga"><span class="label">Codice Arbitrale:</span> <span th:text="${arbitro.codiceArbitrale}">A123BC</span></div>
+
+        <a th:href="@{/arbitri}" class="back-link">&larr; Torna all'elenco</a>
     </div>
-
-    <br>
-    <a th:href="@{/arbitri}">&larr; Torna all'elenco</a>
 </body>
 </html>

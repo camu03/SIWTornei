@@ -48,34 +48,6 @@ public class AdminController {
         return "admin/tornei";
     }
 
-    // 2. Mostra il form vuoto per creare un nuovo torneo
-    @GetMapping("/tornei/nuovo")
-    public String newTorneoForm(Model model) {
-        model.addAttribute("torneo", new Torneo());
-        return "admin/torneo-form";
-    }
-
-    // 3. Mostra il form PRE-COMPILATO per la modifica di un torneo esistente
-    @GetMapping("/tornei/modifica/{id}")
-    public String editTorneoForm(@PathVariable("id") Long id, Model model) {
-        // Recupera il torneo dal database tramite l'ID e lo passa al modello
-        model.addAttribute("torneo", torneoService.findById(id)); 
-        return "admin/torneo-form";
-    }
-
-    // 4. Salva il torneo nel database (Unico metodo per Creazione e Modifica)
-    @PostMapping("/tornei/salva")
-    public String saveTorneo(@ModelAttribute("torneo") Torneo torneo) {
-        torneoService.saveTorneo(torneo);
-        return "redirect:/admin/tornei"; // Torna alla lista dopo il salvataggio
-    }
-
-    @PostMapping("/tornei/{id}/delete")
-    public String deleteTorneo(@PathVariable("id") Long id) {
-        torneoService.deleteTorneo(id);
-        return "redirect:/admin/tornei";
-    }
-
     // --- GESTIONE SQUADRE ---
 
     // 1. Mostra l'elenco delle squadre

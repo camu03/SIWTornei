@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <div th:fragment="navbar" class="navbar">
+        <a th:href="@{/}" class="logo">⚽ SIW Tornei</a>
+        
+        <div class="nav-links">
+            <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Accedi</a>
+            <!--tasto benvenuto con nome utente-->
+            <span sec:authorize="isAuthenticated()" style="color: white; font-weight: bold; margin-left: 20px;" >BENVENUTO <span th:text="${#authentication.principal.username}"></span></span>
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display:inline; margin:0;">
+                <button type="submit" style="background: none; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 16px; margin-left: 20px; padding: 0;">Esci</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

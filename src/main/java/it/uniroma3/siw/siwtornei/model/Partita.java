@@ -18,9 +18,9 @@ public class Partita {
     private LocalDateTime dataOra;
     @Column(nullable = false)
     private String luogo;
-    @Column(nullable = false)
+    @Column
     private Integer golHome;
-    @Column(nullable = false)
+    @Column
     private Integer golAway;
     @Enumerated(EnumType.STRING)
     private StatoPartita stato;

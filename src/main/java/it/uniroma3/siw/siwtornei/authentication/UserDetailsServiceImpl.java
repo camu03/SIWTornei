@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service // FONDAMENTALE! Dice a Spring di usare questo file per i login
+@Service 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired

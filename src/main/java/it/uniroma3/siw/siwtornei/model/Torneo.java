@@ -18,6 +18,11 @@ public class Torneo {
     private String descrizione;
 
     @ManyToMany
+    @JoinTable(
+        name = "torneo_squadre", 
+        joinColumns = @JoinColumn(name = "torneo_id"), 
+        inverseJoinColumns = @JoinColumn(name = "squadre_id") 
+    )
     private List<Squadra> squadre;
     @OneToMany(mappedBy = "torneo", cascade = CascadeType.REMOVE)
     private List<Partita> partite;

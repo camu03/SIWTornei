@@ -1,0 +1,761 @@
+/* --- STILI GLOBALI BASE --- */
+body { 
+    font-family: Arial, sans-serif; 
+    background-color: #f2f2f2; 
+    color: #222222;
+    margin: 0; 
+}
+
+.home-page {
+    background-color: #ffffff;
+    color: #222222;
+}
+
+a, a:visited {
+    color: #1f6f22 !important;
+}
+
+a:hover {
+    color: #2e8b57 !important;
+}
+
+h1, h2 {
+    color: #2b2b2b; 
+    border-bottom: 2px solid #1f6f22; 
+    padding-bottom: 10px; 
+    margin-top: 0; 
+}
+
+h3 {
+    color: #f5f5f5;
+}
+
+/* --- CONTENITORI (Form e Liste Admin) --- */
+.container { 
+    max-width: 900px; 
+    margin: 30px auto; 
+    background: #ffffff; 
+    color: #222222;
+    padding: 30px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12); 
+    border: 1px solid #dddddd;
+}
+
+.form-container { 
+    background: #ffffff; 
+    color: #222222;
+    padding: 30px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12); 
+    width: 450px; 
+    margin: 50px auto; 
+    border: 1px solid #dddddd;
+}
+
+/* --- TABELLE --- */
+table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 6px; overflow: hidden; }
+th, td { padding: 12px; border: 1px solid #4a4a4a; text-align: left; }
+th { background-color: #2d2d2d; color: #ffffff; font-weight: bold; }
+tbody tr { background-color: #ffffff; }
+tbody tr:nth-child(even) { background-color: #f2f2f2; }
+tbody tr:hover { background-color: #e8f5e9; }
+td a { color: #1f6f22; text-decoration: none; }
+td a:hover { color: #18531b; text-decoration: underline; }
+
+/* --- BOTTONI E LINK --- */
+.btn { padding: 8px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block; cursor: pointer; font-size: 14px; border: none; font-family: inherit; }
+.btn, .btn:visited {
+    color: #ffffff !important;
+}
+.btn-add { background-color: #1f6f22; color: white; margin-bottom: 15px; }
+.btn-add:hover { background-color: #18531b; }
+.btn-edit { background-color: #1f6f22; color: white; }
+.btn-edit:hover { background-color: #18531b; }
+.btn-del { background-color: #4a4a4a; color: white; }
+.btn-del:hover { background-color: #2f2f2f; }
+
+/* Bottoni primari/secondari generici (usati nelle liste e nei filtri) */
+.btn-primary, .btn-primary:visited { background-color: #1f6f22; color: #ffffff !important; padding: 8px 12px; border-radius: 5px; text-decoration: none; display: inline-block; }
+.btn-primary:hover { background-color: #18531b; color: #ffffff !important; }
+.btn-secondary, .btn-secondary:visited { background-color: #6c6c6c; color: #ffffff !important; padding: 8px 12px; border-radius: 5px; text-decoration: none; display: inline-block; }
+.btn-secondary:hover { background-color: #565656; color: #ffffff !important; }
+.azioni-container { display: flex; gap: 10px; align-items: center; justify-content: flex-end; width: 100%; }
+.azioni-container form { margin: 0; }
+.azioni-container .btn,
+.azioni-container button[type="submit"] {
+    min-width: 100px;
+    padding: 8px 14px;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 0;
+}
+.azioni-container button[type="submit"].btn-del {
+    background-color: #4a4a4a !important;
+}
+.azioni-container button[type="submit"].btn-del:hover {
+    background-color: #2f2f2f !important;
+}
+.back-link { display: block; text-align: center; margin-top: 20px; color: #1f6f22; text-decoration: none; font-weight: bold; }
+
+/* Modificatore per bottoni grandi */
+.btn-lg {
+    padding: 14px 28px !important;
+    font-size: 16px !important;
+    border-radius: 6px !important;
+    min-width: 200px; /* Assicura che siano tutti larghi uguali, o almeno di una certa grandezza */
+    text-align: center;
+}
+
+/* --- INPUT DEI FORM --- */
+.input-group { margin-bottom: 15px; }
+label { display: block; margin-bottom: 5px; color: #333333; font-weight: bold; font-size: 14px; }
+input, select, textarea { width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; background: #ffffff; color: #222222; }
+button[type="submit"] { width: 100%; padding: 12px; background-color: #1f6f22; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; font-weight: bold; }
+button[type="submit"]:hover { background-color: #18531b; }
+
+/* --- DASHBOARD ADMIN --- */
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 20px; 
+    margin-top: 30px; 
+}
+
+.card { 
+    background: #4a4a4a; 
+    border: 1px solid #5c5c5c; 
+    padding: 20px; 
+    border-radius: 8px; 
+    text-align: center; 
+    transition: transform 0.2s; 
+    color: #ffffff;
+}
+
+.card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1); 
+}
+
+.card h3 { 
+    margin-top: 0; 
+    color: #ffffff; 
+    border-bottom: none; 
+}
+
+.btn-manage, .btn-manage:visited { 
+    display: inline-block; 
+    margin-top: 10px; 
+    padding: 10px 20px; 
+    background-color: #1f6f22; 
+    color: #ffffff !important; /* Forza il testo a rimanere bianco */
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-weight: bold; 
+}
+
+.btn-manage:hover { 
+    background-color: #18531b; 
+    color: #b7ff86 !important; /* Opzionale: al passaggio del mouse il testo diventa verde chiaro */
+}
+
+/* --- GESTIONE TABELLE (LAYOUT) --- */
+
+/* La colonna principale deve occupare tutto lo spazio possibile */
+.col-larga {
+    width: auto;
+}
+
+/* La colonna dell'anno deve essere stretta */
+.col-anno {
+    width: 100px;
+    text-align: center;
+}
+
+/* La colonna azioni deve essere ridotta al minimo indispensabile */
+.col-azioni {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right !important;
+}
+
+/* Assicura che i bottoni dentro la colonna azioni siano spinti a destra */
+.azioni-container.right {
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Elimina il margine del form per non sballare l'altezza della riga */
+.form-inline {
+    margin: 0;
+    display: inline;
+}
+
+/* --- MODALE (POP-UP) --- */
+.modal-overlay {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Sfondo scuro semitrasparente */
+    display: none; /* Nascosto di default, lo mostra il JavaScript */
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; /* Lo tiene sopra a tutto il resto */
+}
+
+.modal-content { 
+    background: #ffffff; 
+    padding: 25px; 
+    border-radius: 8px; 
+    width: 400px; 
+    max-width: 90%; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: #222222;
+}
+
+.modal-body { 
+    max-height: 250px; /* Se ci sono troppe squadre, appare la barra di scorrimento */
+    overflow-y: auto; 
+    border: 1px solid #ddd; 
+    padding: 15px; 
+    margin-bottom: 15px; 
+    border-radius: 4px;
+}
+
+/* --- LAYOUT DI BASE E FOOTER --- */
+html { position: relative; min-height: 100%; }
+body { margin-bottom: 80px; /* Lascia spazio per il footer */ }
+
+.footer { 
+    position: absolute; bottom: 0; width: 100%; height: 60px; 
+    background-color: #2d2d2d; color: #e6e6e6; 
+    text-align: center; line-height: 60px; font-size: 14px; 
+}
+
+.home-page .footer {
+    background-color: #111111;
+    color: #e6e6e6;
+}
+
+/* --- NAVBAR (Barra di navigazione) --- */
+.navbar { 
+    background-color: #2d2d2d; padding: 15px 30px; 
+    display: flex; justify-content: space-between; align-items: center; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+}
+.home-page .navbar {
+    background: #2d2d2d;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+.navbar .logo { 
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px; font-weight: bold; color: #b7ff86 !important; 
+    text-decoration: none; border: none; 
+}
+.home-page .navbar .logo {
+    color: #b7ff86 !important;
+}
+.nav-links a { 
+    color: white !important; text-decoration: none; margin-left: 20px; font-weight: bold; 
+    transition: color 0.3s;
+}
+.nav-links a:hover { color: #b7ff86; }
+.home-page .nav-links a {
+    color: #ffffff;
+}
+.home-page .nav-links a:hover {
+    color: #b7ff86;
+}
+
+/* --- HERO SECTION (Per la Home Page) --- */
+.hero { 
+    background: linear-gradient(135deg, #1c4d1d 0%, #4fa54f 55%, #8bd48a 100%); 
+    color: white; text-align: center; padding: 80px 20px; 
+    margin-bottom: 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.hero h1 { color: white; border: none; font-size: 48px; margin-bottom: 10px; }
+.hero p { font-size: 20px; font-weight: 300; color: #f3fff0; }  
+
+.home-page .hero {
+    background: linear-gradient(135deg, #1c4d1d 0%, #4fa54f 55%, #8bd48a 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+.home-page .hero h1 {
+    color: #ffffff;
+}
+.home-page .hero p {
+    color: #f3fff0;
+}
+.home-page .home-cta {
+    font-size: 18px;
+    padding: 12px 25px;
+    margin-top: 20px;
+    background-color: #1f6f22;
+    color: #ffffff;
+}
+.home-page .home-cta:hover {
+    background-color: #18531b;
+}
+.home-page .home-intro {
+    background: #ffffff;
+    color: #222222;
+    border: 1px solid #dddddd;
+}
+.home-page .home-section-title {
+    color: #2b2b2b;
+    border-bottom: 2px solid #1f6f22;
+}
+.home-page .card {
+    background: #4a4a4a;
+    border: 1px solid #5c5c5c;
+    color: #f5f5f5;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.home-page .card p {
+    color: #f0f0f0;
+}
+.home-page .card h3 {
+    color: #ffffff !important;
+}
+
+/* --- PAGINE SPECIFICHE TEMATIZZATE --- */
+.login-page,
+.registration-page,
+.comment-form-page,
+.player-page,
+.team-page,
+.match-page,
+.classifica-page {
+    background-color: #f2f2f2;
+    color: #222222;
+}
+
+.login-page .login-container {
+    width: 350px;
+}
+
+.login-page .btn-registrati {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #1f6f22;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.login-page .btn-registrati:hover {
+    background-color: #18531b;
+}
+
+.registration-page .reg-container {
+    width: 400px;
+}
+
+.registration-page .role-group {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px dashed #5c5c5c;
+    border-radius: 5px;
+    background: #ffffff;
+}
+
+.registration-page .radio-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.registration-page .radio-item input {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.comment-form-page textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.comment-form-page .btn-edit {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.player-page .player-container {
+    max-width: 700px;
+}
+
+.player-page .player-title {
+    color: #1f6f22;
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #1f6f22;
+    padding-bottom: 10px;
+}
+
+.player-page .info-riga {
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.player-page .label {
+    font-weight: bold;
+    color: #333333;
+    display: inline-block;
+    width: 150px;
+}
+
+.team-page .team-hero {
+    background: linear-gradient(135deg, #1c4d1d 0%, #4fa54f 55%, #8bd48a 100%);
+}
+
+.team-page .team-container {
+    max-width: 900px;
+}
+
+.team-page .team-roster {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 20px 0 0;
+}
+
+.team-page .team-player-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #5c5c5c;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-left: 5px solid #1f6f22;
+    background-color: #4a4a4a;
+    border-radius: 6px;
+    color: #ffffff;
+}
+
+.team-page .ruolo {
+    font-weight: bold;
+    color: #b7ff86;
+    display: inline-block;
+    flex: 0 0 auto;
+}
+
+.team-page .team-player-link,
+.team-page .team-player-link:visited {
+    margin-left: 20px;
+    text-align: right;
+    text-decoration: none;
+    font-size: 1.1em;
+    color: #ffffff !important;
+}
+
+.team-page .team-player-link:hover {
+    color: #b7ff86 !important;
+}
+
+.classifica-page .classifica-container {
+    max-width: 900px;
+}
+
+.classifica-page .classifica-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.classifica-page .classifica-table th,
+.classifica-page .classifica-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.classifica-page .classifica-table th {
+    background-color: #2d2d2d;
+    color: #ffffff;
+}
+
+.classifica-page .classifica-table tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+.classifica-page .posizione {
+    width: 50px;
+    font-weight: bold;
+}
+
+.classifica-page .punti {
+    font-weight: bold;
+    color: #1f6f22;
+}
+
+.classifica-page .classifica-table a,
+.classifica-page .classifica-table a:visited {
+    color: #1f6f22 !important;
+    text-decoration: none;
+}
+
+.classifica-page .classifica-table a:hover {
+    color: #2e8b57 !important;
+}
+
+.match-page .match-container {
+    max-width: 1000px;
+}
+
+.match-page .tabellone {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.match-page .squadre {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.match-page .risultato {
+    font-size: 3em;
+    color: #b7ff86;
+    margin: 15px 0;
+}
+
+.match-page .match-scheduled {
+    font-size: 1.5em;
+    color: #f3fff0;
+}
+
+.match-page .info-extra {
+    color: #e6e6e6;
+    font-size: 1.1em;
+}
+
+.match-page .match-location {
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.match-page .commenti-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.match-page .singolo-commento {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    margin-bottom: 15px;
+}
+
+.match-page .comment-meta {
+    font-size: 0.85em;
+    color: #666666;
+    margin-left: 10px;
+}
+
+.match-page .comment-text {
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.match-page .comment-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+.match-page .comment-actions span {
+    display: block;
+}
+
+.match-page .comment-actions .back-link {
+    display: inline-block;
+    margin-top: 0;
+}
+
+.match-page .comment-actions form {
+    margin: 0;
+}
+
+.match-page .comment-delete {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0;
+}
+
+.match-page .form-commento {
+    margin-top: 20px;
+}
+
+.match-page .back-link,
+.match-page .back-link:visited {
+    color: #1f6f22 !important;
+}
+
+.listing-page {
+    background-color: #f2f2f2;
+    color: #222222;
+}
+
+.listing-page .listing-hero,
+.torneo-page .torneo-hero {
+    background: linear-gradient(135deg, #1c4d1d 0%, #4fa54f 55%, #8bd48a 100%);
+}
+
+.listing-page .listing-container,
+.torneo-page .torneo-container {
+    max-width: 900px;
+}
+
+.listing-page .listing-card {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.listing-page .listing-title {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.listing-page .listing-link,
+.listing-page .listing-link:visited {
+    color: #b7ff86 !important;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.listing-page .listing-link:hover {
+    color: #ffffff !important;
+}
+
+.listing-page .listing-result {
+    font-size: 1.5em;
+    color: #b7ff86;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.listing-page .listing-data {
+    color: #f0f0f0;
+    font-style: italic;
+}
+
+.listing-page .listing-meta {
+    color: #f0f0f0;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.listing-page .empty-state,
+.torneo-page .empty-state {
+    color: #333333;
+}
+
+.torneo-page {
+    background-color: #f2f2f2;
+    color: #222222;
+}
+
+.torneo-page .info-box {
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: auto;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.torneo-page .btn-edit {
+    margin: 10px 8px;
+}
+
+.tournaments-list {
+    background: #ffffff;
+    color: #222222;
+    border: 1px solid #dddddd;
+}
+
+.tournaments-grid {
+    margin-top: 40px;
+}
+
+.torneo-card {
+    text-align: left;
+}
+
+.torneo-card .titolo-torneo,
+.torneo-card .titolo-torneo:visited {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #ffffff !important;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.torneo-card .titolo-torneo:hover {
+    color: #b7ff86 !important;
+    text-decoration: underline;
+}
+
+.empty-state {
+    color: #333333;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.btn-dark { 
+    background-color: #555555; /* Grigio scuro coerente con le card */
+    color: white; 
+}
+.btn-dark:hover { 
+    background-color: #333333; 
+    color: #ffc107; /* Testo giallo al passaggio del mouse */
+}
+
+/* --- CORREZIONE COLORI TITOLI SU SFONDO BIANCO --- */
+.modal-content h1,
+.modal-content h2,
+.modal-content h3,
+.match-page .commenti-section h2,
+.match-page .commenti-section h3,
+.match-page .form-commento h2,
+.match-page .form-commento h3 {
+    color: #2b2b2b !important;
+    border-bottom-color: #2b2b2b; /* Assicura che anche l'eventuale linea sotto il titolo sia visibile */
+}

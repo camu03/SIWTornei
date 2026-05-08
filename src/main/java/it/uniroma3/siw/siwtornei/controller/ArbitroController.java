@@ -42,15 +42,16 @@ public class ArbitroController {
         return "admin/arbitro-form";
     }
 
-    @PostMapping("/admin/arbitro")
+    // UNICO METODO DI SALVATAGGIO (creazione e modifica)
+    @PostMapping("/admin/arbitro/salva")
     public String salvaArbitro(@ModelAttribute("arbitro") Arbitro arbitro) {
         arbitroService.saveArbitro(arbitro);
-        return "redirect:/arbitri"; // Dopo il salvataggio, torna alla lista
+        return "redirect:/admin/arbitri"; // Torna alla lista admin!
     }
 
     @PostMapping("/admin/arbitro/{id}/delete")
     public String eliminaArbitro(@PathVariable("id") Long id) {
         arbitroService.deleteArbitro(id);
-        return "redirect:/arbitri"; 
+        return "redirect:/admin/arbitri"; // Torna alla lista admin!
     }
 }

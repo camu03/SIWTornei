@@ -2,32 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Squadre - <span th:text="${torneo.nome}">Torneo</span></title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .squadra-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
-        .indietro { display: block; margin-top: 20px; }
-    </style>
+    <title>Squadre - SIW Tornei</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
+<body class="listing-page">
 
-    <h1>Squadre iscritte a: <span th:text="${torneo.nome}">Nome Torneo</span></h1>
+    <div th:replace="~{fragments :: navbar}"></div>
 
-    <div th:if="${squadre.isEmpty()}">
-        <p>Non ci sono ancora squadre iscritte a questo torneo.</p>
+    <div class="hero listing-hero">
+        <h1>Squadre iscritte a: <span th:text="${torneo.nome}">Nome Torneo</span></h1>
+        <p>Le squadre partecipanti al torneo e i relativi dettagli.</p>
     </div>
 
-    <div th:unless="${squadre.isEmpty()}">
-        <div th:each="squadra : ${squadre}" class="squadra-card">
-            
-            <h2>
-                <a th:href="@{/squadra/{id}(id=${squadra.id})}" th:text="${squadra.nome}">Nome Squadra</a>
-            </h2>
-            
+    <div class="container listing-container" style="text-align: center;">
+        <h2 class="home-section-title" style="border: none;">Elenco Squadre</h2>
+
+        <div th:if="${torneo.squadre.isEmpty()}">
+            <p class="empty-state">Non ci sono ancora squadre iscritte a questo torneo.</p>
+        </div>
+
+        <div th:unless="${torneo.squadre.isEmpty()}" class="grid tournaments-grid">
+            <div th:each="squadra : ${torneo.squadre}" class="card torneo-card">
+                <h3 style="margin: 0;">
+                    <a th:href="@{/squadra/{id}(id=${squadra.id})}" th:text="${squadra.nome}" class="titolo-torneo">Nome Squadra</a>
+                </h3>
             </div>
-    </div>
+        </div>
 
-    <a th:href="@{/torneo/{id}(id=${torneo.id})}" class="indietro">Torna al Torneo</a>
+        <a th:href="@{/torneo/{id}(id=${torneo.id})}" class="back-link">&larr; Torna al Torneo</a>
+    </div>
 
 </body>
-</html> 
+</html>

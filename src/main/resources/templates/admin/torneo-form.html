@@ -3,18 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuovo Torneo</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 400px; }
-        h2 { color: #333; margin-bottom: 20px; border-bottom: 2px solid #ffc107; padding-bottom: 10px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        button:hover { background-color: #218838; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
+
+    <div th:replace="~{fragments :: navbar}"></div>
 
     <div class="form-container">
         <h2 th:text="${torneo.id == null ? 'Inserisci Nuovo Torneo' : 'Modifica Torneo'}">Inserisci Nuovo Torneo</h2>
@@ -38,6 +31,39 @@
                 <textarea th:field="*{descrizione}" rows="3" required></textarea>
             </div>
 
+            <div class="input-group">
+                <label>Squadre Partecipanti</label>
+                <button type="button" class="btn btn-edit" style="width: 100%; margin-top: 0;" onclick="openModal()">
+                    Gestisci Squadre Iscritte
+                </button>
+                <div style="text-align: center; margin-top: 8px;">
+                    <span id="contatoreSquadre" style="color: #555; font-size: 14px; font-weight: bold;">0 squadre selezionate</span>
+                </div>
+            </div>
+
+            <div id="squadreModal" class="modal-overlay">
+                <div class="modal-content">
+                    <h3 style="margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Seleziona le Squadre</h3>
+                    
+                    <div class="modal-body">
+                        <div th:if="${tutteLeSquadre == null or tutteLeSquadre.isEmpty()}">
+                            <small style="color: #666;">Nessuna squadra presente nel sistema.</small>
+                        </div>
+
+                        <div th:each="squadra : ${tutteLeSquadre}" style="margin-bottom: 8px;">
+                            <input type="checkbox" th:field="*{squadre}" th:value="${squadra.id}" 
+                                   style="width: auto; display: inline-block; margin-right: 8px;" 
+                                   onchange="aggiornaContatore()"/>
+                            <label th:for="${#ids.prev('squadre')}" th:text="${squadra.nome}" 
+                                   style="display: inline-block; font-weight: normal; margin-bottom: 0; cursor: pointer;"></label>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-add" style="width: 100%; margin-bottom: 0;" onclick="closeModal()">
+                        Conferma Selezione
+                    </button>
+                </div>
+            </div>
             <button type="submit">Salva Torneo</button>
         </form>
 
@@ -45,6 +71,28 @@
             <a th:href="@{/admin/tornei}" style="color: #6c757d; text-decoration: none;">&larr; Annulla</a>
         </p>
     </div>
+
+    <script>
+        // Mostra la finestra modale
+        function openModal() {
+            document.getElementById('squadreModal').style.display = 'flex';
+        }
+
+        // Nasconde la finestra modale
+        function closeModal() {
+            document.getElementById('squadreModal').style.display = 'none';
+        }
+
+        // Calcola in tempo reale quante checkbox hanno la spunta
+        function aggiornaContatore() {
+            let count = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            let testo = count === 1 ? " squadra selezionata" : " squadre selezionate";
+            document.getElementById('contatoreSquadre').innerText = count + testo;
+        }
+
+        // Aggiorna il contatore non appena apri la pagina (fondamentale per le modifiche)
+        window.onload = aggiornaContatore;
+    </script>
 
 </body>
 </html>

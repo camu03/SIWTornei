@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import it.uniroma3.siw.siwtornei.service.ArbitroService;
 import java.util.List;
 import org.springframework.ui.Model;
@@ -25,14 +27,23 @@ public class PartitaController {
     @Autowired
     private ArbitroService arbitroService; 
 
+    //ordina partite per data
     @GetMapping("/torneo/{id}/partite")
-    public String showPartitePerTorneo(@PathVariable("id") Long id, Model model) {
+    public String showPartitePerTorneo(@PathVariable("id") Long id, Model model, 
+                                        @RequestParam(required = false, defaultValue = "false") boolean sortByDateAsc,
+                                        @RequestParam(required = false, defaultValue = "false") boolean sortByDateDesc) {
 
     Torneo torneo = torneoService.findById(id);
     List<Partita> partiteDelTorneo = partitaService.findByTorneo(torneo);
-
+    
     model.addAttribute("torneo", torneo);
     model.addAttribute("partite", partiteDelTorneo);
+    if(sortByDateAsc){
+        model.addAttribute("partite", partitaService.findByTorneoOrderByDataOraAsc(torneo));
+    }
+    if(sortByDateDesc){
+        model.addAttribute("partite", partitaService.findByTorneoOrderByDataOraDesc(torneo));
+    }
 
     return "partite_torneo";
 
@@ -44,6 +55,7 @@ public class PartitaController {
         model.addAttribute("partita", partita);
         return "partita";
     }
+
 
     @GetMapping("/admin/torneo/{torneoId}/partita/new")
     public String formNuovaPartita(@PathVariable("torneoId") Long torneoId, Model model) {

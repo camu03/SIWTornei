@@ -3,27 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Modifica Commento</title>
-    <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; margin-top: 50px; background-color: #f8f9fa; }
-        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 500px; }
-        textarea { width: 100%; height: 100px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-        .btn { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; text-decoration: none; display: inline-block;}
-        .btn-salva { background-color: #28a745; color: white; width: 100%; }
-        .btn-annulla { background-color: transparent; color: #dc3545; text-align: center; width: 100%; display: block; margin-top: 10px; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
+<body class="comment-form-page">
+
+    <div th:replace="~{fragments :: navbar}"></div>
 
     <div class="form-container">
-        <h2 style="margin-top: 0;">Modifica il tuo commento</h2>
+        <h2>Modifica il tuo commento</h2>
         
         <form th:action="@{/user/commento/{id}/edit(id=${commento.id})}" method="post">
             <textarea name="testo" required th:text="${commento.testo}"></textarea>
             
-            <button type="submit" class="btn btn-salva">Salva Modifiche</button>
+            <button type="submit" class="btn btn-edit">Salva Modifiche</button>
         </form>
         
-        <a th:href="@{/partita/{id}(id=${commento.partita.id})}" class="btn-annulla">Annulla e torna alla partita</a>
+        <a th:href="@{/partita/{id}(id=${commento.partita.id})}" class="back-link">Annulla e torna alla partita</a>
     </div>
 
 </body>

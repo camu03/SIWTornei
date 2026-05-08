@@ -2,45 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Dettaglio Squadra - <span th:text="${squadra.nome}">Nome Squadra</span></title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .header-squadra { background-color: #007bff; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .giocatore-card { 
-            border: 1px solid #ddd; padding: 10px; margin-bottom: 5px; 
-            border-left: 5px solid #007bff; background-color: #f8f9fa;
-        }
-        .ruolo { font-weight: bold; color: #555; display: inline-block; width: 100px; }
-        .indietro { display: block; margin-top: 20px; }
-    </style>
+    <title>Dettaglio Squadra</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
+<body class="team-page">
 
-    <div class="header-squadra">
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="hero team-hero">
         <h1 th:text="${squadra.nome}">Nome Squadra</h1>
-        </div>
-
-    <h2>Roster Giocatori:</h2>
-
-    <div th:if="${squadra.giocatori.isEmpty()}">
-        <p>Nessun giocatore registrato per questa squadra.</p>
+        <p>Roster dei giocatori e dettagli della squadra.</p>
     </div>
 
-    <ul th:unless="${squadra.giocatori.isEmpty()}" style="list-style-type: none; padding-left: 0;">
-        
-        <li th:each="giocatore : ${squadra.giocatori}" class="giocatore-card">
-            
-            <span class="ruolo" th:text="${giocatore.ruolo}">Ruolo</span>
-            
-            <a th:href="@{/giocatore/{id}(id=${giocatore.id})}" style="text-decoration: none; font-size: 1.1em; color: #333;">
-                <span th:text="${giocatore.nome} + ' ' + ${giocatore.cognome}">Nome Cognome</span>
-            </a>
-            
-        </li>
-        
-    </ul>
+    <div class="container team-container">
 
-    <a href="javascript:history.back()" class="indietro">&larr; Torna indietro</a>
+        <div class="card torneo-card" style="max-width: 600px; margin: 0 auto 20px; text-align: left; padding: 20px;">
+            <p><strong>Anno Fondazione:</strong> <span th:text="${squadra.annoFondazione != null ? squadra.annoFondazione : ''}">2026</span></p>
+            <p><strong>Città:</strong> <span th:text="${squadra.citta != null ? squadra.citta : ''}">Roma</span></p>
+        </div>
+
+        <h2>Roster Giocatori:</h2>
+
+        <div th:if="${squadra.giocatori.isEmpty()}">
+            <p class="empty-state">Nessun giocatore registrato per questa squadra.</p>
+        </div>
+
+        <ul th:unless="${squadra.giocatori.isEmpty()}" class="team-roster">
+            <li th:each="giocatore : ${squadra.giocatori}" class="team-player-card">
+                <span class="ruolo" th:text="${giocatore.ruolo}">Ruolo</span>
+                <a th:href="@{/giocatore/{id}(id=${giocatore.id})}" class="team-player-link">
+                    <span th:text="${giocatore.nome} + ' ' + ${giocatore.cognome}">Nome Cognome</span>
+                </a>
+            </li>
+        </ul>
+
+        <a href="javascript:history.back()" class="back-link">&larr; Torna indietro</a>
+    </div>
 
 </body>
 </html>
