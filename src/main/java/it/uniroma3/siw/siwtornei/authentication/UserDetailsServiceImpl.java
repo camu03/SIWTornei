@@ -2,7 +2,6 @@ package it.uniroma3.siw.siwtornei.authentication;
 
 import it.uniroma3.siw.siwtornei.model.Utente;
 import it.uniroma3.siw.siwtornei.repository.UtenteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,8 +11,11 @@ import org.springframework.stereotype.Service;
 @Service 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UtenteRepository utenteRepository;
+    private final UtenteRepository utenteRepository;    
+
+    public UserDetailsServiceImpl(UtenteRepository utenteRepository) {
+        this.utenteRepository = utenteRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +12,19 @@ import it.uniroma3.siw.siwtornei.model.Squadra;
 @Controller
 public class GiocatoreController {
 
-    @Autowired
-    private GiocatoreService giocatoreService;
-    
-    @Autowired
-    private SquadraService squadraService;
+    private final GiocatoreService giocatoreService;
+    private final SquadraService squadraService;
 
+    public GiocatoreController(GiocatoreService giocatoreService, SquadraService squadraService) {
+        this.giocatoreService = giocatoreService;
+        this.squadraService = squadraService;
+    }
     
     @GetMapping("/giocatore/{id}")
     public String showDettaglioGiocatore(@PathVariable("id") Long id, Model model) {
         Giocatore giocatore = giocatoreService.findById(id);
         model.addAttribute("giocatore", giocatore);
-        return "giocatore"; // La pagina con la "figurina" del giocatore
+        return "giocatore"; // La pagina del giocatore
     } 
 
     // --- ADMIN (4.3) ---
@@ -34,7 +34,7 @@ public class GiocatoreController {
         Squadra squadra = squadraService.findById(squadraId);
         model.addAttribute("squadra", squadra);
         model.addAttribute("giocatore", new Giocatore());
-        return "admin/formGiocatore";
+        return "admin/giocatore-form";
     }
 
     @PostMapping("/admin/squadra/{squadraId}/giocatore")

@@ -5,7 +5,6 @@ import it.uniroma3.siw.siwtornei.model.Torneo;
 import it.uniroma3.siw.siwtornei.repository.TorneoRepository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,10 +21,13 @@ import java.time.Year;
 @Service
 public class TorneoService{
     
-    @Autowired 
-    private TorneoRepository torneoRepository;
-    @Autowired
-    private PartitaRepository partitaRepository;
+    private final TorneoRepository torneoRepository;
+    private final PartitaRepository partitaRepository;
+
+    public TorneoService(TorneoRepository torneoRepository, PartitaRepository partitaRepository) {
+        this.torneoRepository = torneoRepository;
+        this.partitaRepository = partitaRepository;
+    }
 
 
     @Transactional

@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,12 +20,15 @@ import java.security.Principal;
 @Controller
 public class CommentoController {
 
-    @Autowired
-    private CommentoService commentoService;   
-    @Autowired
-    private PartitaService partitaService;
-    @Autowired
-    private UtenteService utenteService;
+    private final CommentoService commentoService;
+    private final PartitaService partitaService;
+    private final UtenteService utenteService;
+
+    public CommentoController(CommentoService commentoService, PartitaService partitaService, UtenteService utenteService) {
+        this.commentoService = commentoService;
+        this.partitaService = partitaService;
+        this.utenteService = utenteService;
+    }
 
     // --- UTENTE REGISTRATO ---
 
@@ -84,7 +86,7 @@ public class CommentoController {
         }
         
         model.addAttribute("commento", commento);
-        return "formModificaCommento"; 
+        return "commento-form"; 
     }
     
     // ==========================================

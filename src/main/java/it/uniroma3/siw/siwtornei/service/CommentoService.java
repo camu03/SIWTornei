@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import it.uniroma3.siw.siwtornei.model.Commento;
@@ -11,8 +10,11 @@ import it.uniroma3.siw.siwtornei.model.Partita;
 @Service
 public class CommentoService {
     
-    @Autowired
-    private CommentoRepository commentoRepository;
+    private final CommentoRepository commentoRepository;
+
+    public CommentoService(CommentoRepository commentoRepository) {
+        this.commentoRepository = commentoRepository;
+    }
 
     @Transactional
     public void saveCommento(Commento commento) {

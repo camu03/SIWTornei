@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.siwtornei.repository.GiocatoreRepository;
 import it.uniroma3.siw.siwtornei.model.Giocatore;
@@ -10,13 +9,17 @@ import java.util.List;
 @Service
 public class GiocatoreService {
     
-    @Autowired
-    private GiocatoreRepository giocatoreRepository;
+    private final GiocatoreRepository giocatoreRepository;
+    
+    public GiocatoreService(GiocatoreRepository giocatoreRepository) {
+        this.giocatoreRepository = giocatoreRepository;
+    }
 
     @Transactional
     public Giocatore saveGiocatore(Giocatore giocatore) {
         return giocatoreRepository.save(giocatore);
     }
+
     @Transactional(readOnly = true)
     public List<Giocatore> findAll() {
         return giocatoreRepository.findAll();
@@ -26,7 +29,7 @@ public class GiocatoreService {
     public Giocatore findById(Long id) {
         return giocatoreRepository.findById(id).orElse(null);
     }
-
+  
     @Transactional(readOnly = true)
     public List<Giocatore> findByNome(String nome) {
         return giocatoreRepository.findByNome(nome);

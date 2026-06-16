@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.siwtornei.model.Partita;
 import it.uniroma3.siw.siwtornei.repository.PartitaRepository;
@@ -12,8 +11,11 @@ import it.uniroma3.siw.siwtornei.model.StatoPartita;
 @Service
 public class PartitaService {
     
-    @Autowired
-    private PartitaRepository partitaRepository;
+    private final PartitaRepository partitaRepository;
+
+    public PartitaService(PartitaRepository partitaRepository) {
+        this.partitaRepository = partitaRepository;
+    }
 
     @Transactional
     public Partita savePartita(Partita partita) {

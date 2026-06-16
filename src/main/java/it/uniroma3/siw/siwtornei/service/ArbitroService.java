@@ -2,7 +2,6 @@ package it.uniroma3.siw.siwtornei.service;
 
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.siwtornei.repository.ArbitroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import it.uniroma3.siw.siwtornei.model.Arbitro;
 import it.uniroma3.siw.siwtornei.model.Partita;
 import it.uniroma3.siw.siwtornei.repository.PartitaRepository;
@@ -12,10 +11,13 @@ import java.util.List;
 @Service
 public class ArbitroService {
 
-    @Autowired
-    private ArbitroRepository arbitroRepository;
-    @Autowired
-    private PartitaRepository partitaRepository;
+    private final ArbitroRepository arbitroRepository;
+    private final PartitaRepository partitaRepository;
+
+    public ArbitroService(ArbitroRepository arbitroRepository, PartitaRepository partitaRepository) {
+        this.arbitroRepository = arbitroRepository;
+        this.partitaRepository = partitaRepository;
+    }
 
     @Transactional
     public Arbitro saveArbitro(Arbitro arbitro) {

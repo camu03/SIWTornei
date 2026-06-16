@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,10 +19,13 @@ import java.util.List;
 @Controller
 public class SquadraController {
     
-    @Autowired
-    private SquadraService squadraService;
-    @Autowired
-    private TorneoService torneoService;
+    private final SquadraService squadraService;
+    private final TorneoService torneoService;
+
+    public SquadraController(SquadraService squadraService, TorneoService torneoService) {
+        this.squadraService = squadraService;
+        this.torneoService = torneoService;
+    }
 
     @GetMapping("/torneo/{id}/squadre")
     public String showSquadreTorneo(@PathVariable("id") Long id, Model model) {
@@ -70,7 +72,7 @@ public class SquadraController {
     @GetMapping("/admin/squadra/new")
     public String formNuovaSquadra(Model model) {
         model.addAttribute("squadra", new Squadra());
-        return "admin/formSquadra";
+        return "admin/squadra-form";
     }
 
     @PostMapping("/admin/squadra")
@@ -84,7 +86,7 @@ public class SquadraController {
     public String formModificaSquadra(@PathVariable("id") Long id, Model model) {
         Squadra squadra = squadraService.findById(id);
         model.addAttribute("squadra", squadra);
-        return "admin/formSquadra";
+        return "admin/squadra-form";
     }
 
     @PostMapping("/admin/squadra/{id}")

@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import it.uniroma3.siw.siwtornei.model.Partita;
 import it.uniroma3.siw.siwtornei.model.StatoPartita;
@@ -20,12 +19,15 @@ import org.springframework.ui.Model;
 @Controller
 public class PartitaController {
     
-    @Autowired
-    private PartitaService partitaService;
-    @Autowired
-    private TorneoService torneoService;
-    @Autowired
-    private ArbitroService arbitroService; 
+    private final PartitaService partitaService;
+    private final TorneoService torneoService;
+    private final ArbitroService arbitroService;
+    
+    public PartitaController(PartitaService partitaService, TorneoService torneoService, ArbitroService arbitroService) {
+        this.partitaService = partitaService;
+        this.torneoService = torneoService;
+        this.arbitroService = arbitroService;
+    }
 
     //ordina partite per data
     @GetMapping("/torneo/{id}/partite")
@@ -67,7 +69,7 @@ public class PartitaController {
         // NUOVO: Passa la lista di tutti gli arbitri al form
         model.addAttribute("arbitri", arbitroService.findAll()); 
         
-        return "admin/formNuovaPartita"; 
+        return "admin/partita-form"; 
     }
 
     @GetMapping("/admin/partita/{id}/edit")
@@ -81,7 +83,7 @@ public class PartitaController {
         // OPZIONALE MA CONSIGLIATO: Passa anche le squadre del torneo in caso volessi cambiarle
         model.addAttribute("squadre", partita.getTorneo().getSquadre());
         
-        return "admin/formModificaPartita"; 
+        return "admin/partita-form"; 
     }
 
     @PostMapping("/admin/torneo/{torneoId}/partita")

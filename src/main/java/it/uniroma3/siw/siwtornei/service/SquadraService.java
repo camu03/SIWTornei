@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import it.uniroma3.siw.siwtornei.repository.SquadraRepository;
@@ -11,9 +10,11 @@ import it.uniroma3.siw.siwtornei.model.Torneo;
 @Service // Fondamentale! Dice a Spring che questo è il "cervello"
 public class SquadraService {
 
-    // "Inietto" il magazziniere per poterlo usare
-    @Autowired
-    private SquadraRepository squadraRepository;
+    private final SquadraRepository squadraRepository;
+
+    public SquadraService(SquadraRepository squadraRepository) {
+        this.squadraRepository = squadraRepository;
+    }
 
     // Operazione di INSERIMENTO / AGGIORNAMENTO (Transazione standard)
     @Transactional

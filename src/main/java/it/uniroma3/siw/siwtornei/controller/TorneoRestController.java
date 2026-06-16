@@ -2,7 +2,6 @@ package it.uniroma3.siw.siwtornei.controller;
 
 import it.uniroma3.siw.siwtornei.model.Torneo;
 import it.uniroma3.siw.siwtornei.service.TorneoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +14,11 @@ import java.util.stream.Collectors;
 @RestController 
 public class TorneoRestController {
 
-    @Autowired
-    private TorneoService torneoService;
+    private final TorneoService torneoService;
+
+    public TorneoRestController(TorneoService torneoService) {
+        this.torneoService = torneoService;
+    }
 
     @GetMapping("/api/tornei")
     public List<Map<String, Object>> getTorneiApi() {

@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,7 +10,7 @@ import it.uniroma3.siw.siwtornei.service.TorneoService;
 import it.uniroma3.siw.siwtornei.model.Giocatore;
 import it.uniroma3.siw.siwtornei.model.Squadra;
 import it.uniroma3.siw.siwtornei.model.StatoPartita;
-import it.uniroma3.siw.siwtornei.model.Torneo;
+//import it.uniroma3.siw.siwtornei.model.Torneo;
 import it.uniroma3.siw.siwtornei.model.Partita;
 import org.springframework.web.bind.annotation.PathVariable;
 import it.uniroma3.siw.siwtornei.service.GiocatoreService;
@@ -23,16 +22,19 @@ import it.uniroma3.siw.siwtornei.service.ArbitroService;
 @RequestMapping("/admin") 
 public class AdminController {
 
-    @Autowired
-    private TorneoService torneoService;
-    @Autowired
-    private SquadraService squadraService;
-    @Autowired
-    private GiocatoreService giocatoreService;
-    @Autowired
-    private PartitaService partitaService;
-    @Autowired
-    private ArbitroService arbitroService;
+    private final TorneoService torneoService;
+    private final SquadraService squadraService;
+    private final GiocatoreService giocatoreService;
+    private final PartitaService partitaService;
+    private final ArbitroService arbitroService;
+
+    public AdminController(TorneoService torneoService, SquadraService squadraService, GiocatoreService giocatoreService, PartitaService partitaService, ArbitroService arbitroService) {
+        this.torneoService = torneoService;
+        this.squadraService = squadraService;
+        this.giocatoreService = giocatoreService;
+        this.partitaService = partitaService;
+        this.arbitroService = arbitroService;
+    }
 
     @GetMapping("/dashboard")
     public String dashboard() {

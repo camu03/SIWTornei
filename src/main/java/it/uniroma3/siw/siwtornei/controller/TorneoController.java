@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +17,13 @@ import java.util.Map;
 @Controller 
 public class TorneoController {
 
-    // Il Controller chiama il Service, MAI direttamente il Repository
-    @Autowired
-    private TorneoService torneoService;
-    @Autowired
-    private SquadraService squadraService;
+    private final TorneoService torneoService;
+    private final SquadraService squadraService;
+
+    public TorneoController(TorneoService torneoService, SquadraService squadraService) {
+        this.torneoService = torneoService;
+        this.squadraService = squadraService;
+    }
 
     // @GetMapping intercetta le richieste verso l'indirizzo localhost:8080/tornei
     @GetMapping("/tornei")

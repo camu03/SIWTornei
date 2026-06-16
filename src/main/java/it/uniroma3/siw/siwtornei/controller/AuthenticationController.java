@@ -1,6 +1,5 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class AuthenticationController {
 
-    @Autowired
-    private UtenteRepository utenteRepository;
+    private final UtenteRepository utenteRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AuthenticationController(UtenteRepository utenteRepository, PasswordEncoder passwordEncoder) {
+        this.utenteRepository = utenteRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping("/login")
     public String showLoginForm(HttpServletRequest request) {

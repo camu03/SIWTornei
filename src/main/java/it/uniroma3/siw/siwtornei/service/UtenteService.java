@@ -2,7 +2,6 @@ package it.uniroma3.siw.siwtornei.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.uniroma3.siw.siwtornei.repository.UtenteRepository;
 import it.uniroma3.siw.siwtornei.model.Utente;
@@ -10,8 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UtenteService {
     
-    @Autowired
-    private UtenteRepository utenteRepository;
+    private final UtenteRepository utenteRepository;
+
+    public UtenteService(UtenteRepository utenteRepository) {
+        this.utenteRepository = utenteRepository;
+    }
 
     @Transactional
     public Utente saveUtente(Utente utente) {
