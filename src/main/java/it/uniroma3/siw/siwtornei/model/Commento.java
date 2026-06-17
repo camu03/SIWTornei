@@ -12,7 +12,7 @@ public class Commento {
 
     @Column(nullable = false)
     private String testo;
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false)
     private LocalDateTime dataOra;
 
     @ManyToOne

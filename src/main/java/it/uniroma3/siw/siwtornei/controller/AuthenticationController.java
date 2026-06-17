@@ -1,24 +1,21 @@
 package it.uniroma3.siw.siwtornei.controller;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import it.uniroma3.siw.siwtornei.model.Utente;
-import it.uniroma3.siw.siwtornei.repository.UtenteRepository;
+import it.uniroma3.siw.siwtornei.service.UtenteService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class AuthenticationController {
 
-    private final UtenteRepository utenteRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UtenteService utenteService;
 
-    public AuthenticationController(UtenteRepository utenteRepository, PasswordEncoder passwordEncoder) {
-        this.utenteRepository = utenteRepository;
-        this.passwordEncoder = passwordEncoder;
+    public AuthenticationController(UtenteService utenteService) {
+        this.utenteService = utenteService;
     }
 
     @GetMapping("/login")
@@ -37,22 +34,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registrazione")
-    public String registerUser(@ModelAttribute("utente") Utente utente, org.springframework.ui.Model model) {
-        
+    public String registerUser(@ModelAttribute("utente") Utente utente, Model model) {
+
         // Se il ruolo è nullo o vuoto, blocchiamo il salvataggio!
         if (utente.getRuolo() == null || utente.getRuolo().trim().isEmpty()) {
-            // Aggiungiamo un messaggio di errore da mostrare nella pagina
             model.addAttribute("erroreRuolo", "Campo obbligatorio: devi selezionare ADMIN o UTENTE per registrarti.");
-            // Rimandiamo l'utente alla pagina di registrazione senza fare danni
-            return "registrazione"; 
+            return "registrazione";
         }
-        
-        utente.setPassword(passwordEncoder.encode(utente.getPassword()));
-        
-        // Salviamo l'utente
-        utenteRepository.save(utente);
-        
-        // Reindirizziamo al login
+
+        utenteService.registra(utente);
+
         return "redirect:/login";
     }
 }

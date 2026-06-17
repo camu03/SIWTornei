@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Benchmark Fetch Strategies</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        .benchmark-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .benchmark-table th, .benchmark-table td { border: 1px solid #ddd; padding: 14px 18px; text-align: left; vertical-align: top; }
+        .benchmark-table th { background: #2c3e50; color: white; font-size: 1rem; }
+        .benchmark-table tr:nth-child(even) { background: #f9f9f9; }
+        .benchmark-table td:first-child { font-weight: bold; white-space: nowrap; color: #c41e3a; width: 140px; }
+        .note { margin-top: 24px; padding: 16px; background: #fffbe6; border-left: 4px solid #f0ad4e; border-radius: 4px; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="container" style="max-width: 900px; margin: 40px auto;">
+        <h1>Analisi Sperimentale — Fetch Strategies</h1>
+        <p style="color: #555;">Confronto tra strategie di accesso ai dati per il caricamento di tornei con squadre partecipanti. I tempi sono misurati in millisecondi.</p>
+
+        <table class="benchmark-table">
+            <thead>
+                <tr>
+                    <th>Strategia</th>
+                    <th>Risultato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry : ${risultati}">
+                    <td th:text="${entry.key}"></td>
+                    <td th:text="${entry.value}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>Nota:</strong> I tempi variano in base alla quantità di dati nel database e al caching JPA.
+            Per risultati più accurati eseguire la pagina più volte e confrontare le medie.
+            I log dettagliati delle query SQL sono visibili nella console del server (impostare <code>spring.jpa.show-sql=true</code>).
+        </div>
+
+        <p style="margin-top: 30px;">
+            <a th:href="@{/admin/dashboard}" class="back-link">&larr; Torna alla Dashboard</a>
+        </p>
+    </div>
+
+</body>
+</html>

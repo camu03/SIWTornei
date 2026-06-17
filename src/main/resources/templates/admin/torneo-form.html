@@ -11,16 +11,21 @@
 
     <div class="form-container">
         <h2 th:text="${torneo.id == null ? 'Inserisci Nuovo Torneo' : 'Modifica Torneo'}">Inserisci Nuovo Torneo</h2>
-        
+
+        <!-- Passiamo gli ID delle squadre già associate come variabile JS -->
+        <div id="squadreGiaAssociate"
+             th:attr="data-ids=${#strings.listJoin(squadreIds, ',')}">
+        </div>
+
         <form th:action="@{/admin/tornei/salva}" method="POST" th:object="${torneo}">
-            
+
             <input type="hidden" th:field="*{id}">
-            
+
             <div class="input-group">
                 <label>Nome Torneo</label>
                 <input type="text" th:field="*{nome}" required>
             </div>
-            
+
             <div class="input-group">
                 <label>Anno</label>
                 <input type="number" th:field="*{anno}" required min="2000" max="2100">
@@ -44,26 +49,30 @@
             <div id="squadreModal" class="modal-overlay">
                 <div class="modal-content">
                     <h3 style="margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Seleziona le Squadre</h3>
-                    
+
                     <div class="modal-body">
                         <div th:if="${tutteLeSquadre == null or tutteLeSquadre.isEmpty()}">
                             <small style="color: #666;">Nessuna squadra presente nel sistema.</small>
                         </div>
 
                         <div th:each="squadra : ${tutteLeSquadre}" style="margin-bottom: 8px;">
-                            <input type="checkbox" th:field="*{squadre}" th:value="${squadra.id}" 
-                                   style="width: auto; display: inline-block; margin-right: 8px;" 
+                            <input type="checkbox"
+                                   name="squadreIds"
+                                   th:value="${squadra.id}"
+                                   th:id="'squadra_' + ${squadra.id}"
+                                   style="width: auto; display: inline-block; margin-right: 8px;"
                                    onchange="aggiornaContatore()"/>
-                            <label th:for="${#ids.prev('squadre')}" th:text="${squadra.nome}" 
+                            <label th:for="'squadra_' + ${squadra.id}" th:text="${squadra.nome}"
                                    style="display: inline-block; font-weight: normal; margin-bottom: 0; cursor: pointer;"></label>
                         </div>
                     </div>
-                    
+
                     <button type="button" class="btn btn-add" style="width: 100%; margin-bottom: 0;" onclick="closeModal()">
                         Conferma Selezione
                     </button>
                 </div>
             </div>
+
             <button type="submit">Salva Torneo</button>
         </form>
 
@@ -73,25 +82,32 @@
     </div>
 
     <script>
-        // Mostra la finestra modale
         function openModal() {
             document.getElementById('squadreModal').style.display = 'flex';
         }
 
-        // Nasconde la finestra modale
         function closeModal() {
             document.getElementById('squadreModal').style.display = 'none';
         }
 
-        // Calcola in tempo reale quante checkbox hanno la spunta
         function aggiornaContatore() {
-            let count = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            let count = document.querySelectorAll('input[name="squadreIds"]:checked').length;
             let testo = count === 1 ? " squadra selezionata" : " squadre selezionate";
             document.getElementById('contatoreSquadre').innerText = count + testo;
         }
 
-        // Aggiorna il contatore non appena apri la pagina (fondamentale per le modifiche)
-        window.onload = aggiornaContatore;
+        // Pre-spunta le squadre già associate (in modalità modifica)
+        window.onload = function() {
+            var raw = document.getElementById('squadreGiaAssociate').dataset.ids;
+            if (raw) {
+                var ids = raw.split(',').map(function(s) { return s.trim(); });
+                ids.forEach(function(id) {
+                    var cb = document.getElementById('squadra_' + id);
+                    if (cb) cb.checked = true;
+                });
+            }
+            aggiornaContatore();
+        };
     </script>
 
 </body>

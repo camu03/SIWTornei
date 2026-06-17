@@ -5,18 +5,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import it.uniroma3.siw.siwtornei.service.TorneoService;
 import it.uniroma3.siw.siwtornei.model.Giocatore;
 import it.uniroma3.siw.siwtornei.model.Squadra;
 import it.uniroma3.siw.siwtornei.model.StatoPartita;
-//import it.uniroma3.siw.siwtornei.model.Torneo;
+import it.uniroma3.siw.siwtornei.model.Torneo;
 import it.uniroma3.siw.siwtornei.model.Partita;
 import org.springframework.web.bind.annotation.PathVariable;
 import it.uniroma3.siw.siwtornei.service.GiocatoreService;
 import it.uniroma3.siw.siwtornei.service.PartitaService;
 import it.uniroma3.siw.siwtornei.service.SquadraService;
 import it.uniroma3.siw.siwtornei.service.ArbitroService;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin") 
@@ -48,6 +51,40 @@ public class AdminController {
     public String manageTornei(Model model) {
         model.addAttribute("tornei", torneoService.findAll());
         return "admin/tornei";
+    }
+
+    // 2. Form per nuovo torneo
+    @GetMapping("/tornei/nuovo")
+    public String formNuovoTorneo(Model model) {
+        model.addAttribute("torneo", new Torneo());
+        model.addAttribute("tutteLeSquadre", squadraService.findAll());
+        model.addAttribute("squadreIds", new ArrayList<>());
+        return "admin/torneo-form";
+    }
+
+    // 3. Form per modificare un torneo esistente
+    @GetMapping("/tornei/modifica/{id}")
+    public String formModificaTorneo(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("torneo", torneoService.findById(id));
+        model.addAttribute("tutteLeSquadre", squadraService.findAll());
+        model.addAttribute("squadreIds", torneoService.getSquadreIds(id));
+        return "admin/torneo-form";
+    }
+
+    // 4. Salva torneo (nuovo o modifica)
+    @PostMapping("/tornei/salva")
+    public String salvaTorneo(@ModelAttribute("torneo") Torneo torneo,
+                              @RequestParam(value = "squadreIds", required = false) List<Long> squadreIds) {
+        List<Squadra> squadreSelezionate = new ArrayList<>();
+        if (squadreIds != null) {
+            for (Long sid : squadreIds) {
+                Squadra s = squadraService.findById(sid);
+                if (s != null) squadreSelezionate.add(s);
+            }
+        }
+        torneo.setSquadre(squadreSelezionate);
+        torneoService.saveTorneo(torneo);
+        return "redirect:/admin/tornei";
     }
 
     // --- GESTIONE SQUADRE ---
@@ -172,6 +209,22 @@ public class AdminController {
     public String deletePartita(@PathVariable("id") Long id) {
         partitaService.deletePartita(id);
         return "redirect:/admin/partite";
+    }
+
+    // --- ELIMINAZIONE TORNEO ---
+
+    @PostMapping("/tornei/{id}/delete")
+    public String deleteTorneo(@PathVariable("id") Long id) {
+        torneoService.deleteTorneo(id);
+        return "redirect:/admin/tornei";
+    }
+
+    // --- BENCHMARK FETCH STRATEGIES (analisi sperimentale - sezione 8.2 PDF) ---
+
+    @GetMapping("/benchmark")
+    public String benchmark(Model model) {
+        model.addAttribute("risultati", torneoService.benchmarkFetchStrategies());
+        return "admin/benchmark";
     }
 
 }    
