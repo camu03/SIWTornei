@@ -36,8 +36,8 @@ public class AuthConfiguration {
                 .requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority("ADMIN")
                 
-                // 4. Tutti gli altri devono essere autenticati
-                .anyRequest().authenticated()
+                // 4. Tutto il resto è pubblico (URL sconosciuti mostreranno la pagina 404)
+                .anyRequest().permitAll()
             )
             // Configurazione del Login
             .formLogin(form -> form
