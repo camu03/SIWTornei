@@ -35,11 +35,6 @@ public class SquadraService {
     }
 
     @Transactional(readOnly = true)
-    public Squadra findByIdWithGiocatori(Long id) {
-        return squadraRepository.findByIdWithGiocatori(id);
-    }
-
-    @Transactional(readOnly = true)
     public List<Squadra> findByNome(String nome) {
         return squadraRepository.findByNome(nome);
     }

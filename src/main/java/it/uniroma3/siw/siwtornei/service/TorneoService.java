@@ -53,7 +53,7 @@ public class TorneoService {
 
     @Transactional(readOnly = true)
     public Map<Squadra, Integer> getClassifica(Torneo torneo) {
-        torneo = torneoRepository.findByIdWithSquadre(torneo.getId());
+        torneo = torneoRepository.findById(torneo.getId()).orElse(null);
         Map<Squadra, Integer> mappa = new HashMap<>();
 
         if (torneo.getSquadre() != null) {

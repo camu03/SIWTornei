@@ -7,6 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import it.uniroma3.siw.siwtornei.model.Torneo;
 import it.uniroma3.siw.siwtornei.model.StatoPartita;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+
 
 @Service
 public class PartitaService {
@@ -42,7 +46,12 @@ public class PartitaService {
         return partitaRepository.findByTorneo(torneo);
     }
 
-    
+    @Transactional(readOnly = true)
+    public List<Partita> findPartiteDelGiorno() {
+        LocalDateTime inizio = LocalDate.now().atStartOfDay();
+        LocalDateTime fine = inizio.plusDays(1);
+    return partitaRepository.findByDataOraBetween(inizio, fine);
+    }
 
     //elimina
     @Transactional

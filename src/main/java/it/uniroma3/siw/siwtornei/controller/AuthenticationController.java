@@ -36,7 +36,7 @@ public class AuthenticationController {
     @PostMapping("/registrazione")
     public String registerUser(@ModelAttribute("utente") Utente utente, Model model) {
 
-        // Se il ruolo è nullo o vuoto, blocchiamo il salvataggio!
+       
         if (utente.getRuolo() == null || utente.getRuolo().trim().isEmpty()) {
             model.addAttribute("erroreRuolo", "Campo obbligatorio: devi selezionare ADMIN o UTENTE per registrarti.");
             return "registrazione";
