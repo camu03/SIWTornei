@@ -14,4 +14,5 @@ List<Partita> findByTorneo(Torneo torneo);
 List<Partita> findByTorneoAndStato(Torneo torneo, StatoPartita stato);
 List<Partita> findByTorneoOrderByDataOraAsc(Torneo torneo);
 List<Partita> findByTorneoOrderByDataOraDesc(Torneo torneo);
+
 }
