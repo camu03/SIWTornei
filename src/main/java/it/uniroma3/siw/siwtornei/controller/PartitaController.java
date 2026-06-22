@@ -31,9 +31,7 @@ public class PartitaController {
 
     //ordina partite per data
     @GetMapping("/torneo/{id}/partite")
-    public String showPartitePerTorneo(@PathVariable("id") Long id, Model model, 
-                                        @RequestParam(required = false, defaultValue = "false") boolean sortByDateAsc,
-                                        @RequestParam(required = false, defaultValue = "false") boolean sortByDateDesc) {
+    public String showPartitePerTorneo(@PathVariable("id") Long id, Model model) {
 
     Torneo torneo = torneoService.findById(id);
     List<Partita> partiteDelTorneo = partitaService.findByTorneo(torneo);
