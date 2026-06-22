@@ -43,7 +43,7 @@ public class SquadraController {
 
     @GetMapping("/squadra/{id}")
     public String showDettagliSquadra(@PathVariable("id") Long id, Model model) {
-        Squadra squadra = squadraService.findById(id);
+        Squadra squadra = squadraService.findByIdWithGiocatori(id);
         if (squadra.getGiocatori() != null) {
             List<Giocatore> giocatoriOrdinati = new ArrayList<>(squadra.getGiocatori());
             giocatoriOrdinati.sort(Comparator.comparingInt(giocatore -> getRank(giocatore.getRuolo())));

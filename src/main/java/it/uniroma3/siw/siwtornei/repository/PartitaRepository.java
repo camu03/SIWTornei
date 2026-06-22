@@ -9,10 +9,18 @@ import it.uniroma3.siw.siwtornei.model.Torneo;
 public interface PartitaRepository extends JpaRepository<Partita, Long> {
     // Trova tutte le partite di un torneo (per il calendario)
 List<Partita> findByTorneo(Torneo torneo);
-
 // Trova le partite di un torneo filtrate per stato (utile per la classifica)
 List<Partita> findByTorneoAndStato(Torneo torneo, StatoPartita stato);
-List<Partita> findByTorneoOrderByDataOraAsc(Torneo torneo);
-List<Partita> findByTorneoOrderByDataOraDesc(Torneo torneo);
+
+
+
+
+
+
+
+
+
+//List<Partita> findByTorneoOrderByDataOraAsc(Torneo torneo);
+//List<Partita> findByTorneoOrderByDataOraDesc(Torneo torneo);
 
 }

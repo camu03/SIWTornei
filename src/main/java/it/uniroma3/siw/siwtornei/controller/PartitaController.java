@@ -40,13 +40,6 @@ public class PartitaController {
     
     model.addAttribute("torneo", torneo);
     model.addAttribute("partite", partiteDelTorneo);
-    if(sortByDateAsc){
-        model.addAttribute("partite", partitaService.findByTorneoOrderByDataOraAsc(torneo));
-    }
-    if(sortByDateDesc){
-        model.addAttribute("partite", partitaService.findByTorneoOrderByDataOraDesc(torneo));
-    }
-
     return "partite_torneo";
 
     }

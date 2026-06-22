@@ -17,12 +17,12 @@
     <div class="container listing-container" style="text-align: center;">
         <h2 class="home-section-title" style="border: none;">Elenco Squadre</h2>
 
-        <div th:if="${torneo.squadre.isEmpty()}">
+        <div th:if="${#lists.isEmpty(squadre)}">
             <p class="empty-state">Non ci sono ancora squadre iscritte a questo torneo.</p>
         </div>
 
-        <div th:unless="${torneo.squadre.isEmpty()}" class="grid tournaments-grid">
-            <div th:each="squadra : ${torneo.squadre}" class="card torneo-card">
+        <div th:unless="${#lists.isEmpty(squadre)}" class="grid tournaments-grid">
+            <div th:each="squadra : ${squadre}" class="card torneo-card">
                 <h3 style="margin: 0;">
                     <a th:href="@{/squadra/{id}(id=${squadra.id})}" th:text="${squadra.nome}" class="titolo-torneo">Nome Squadra</a>
                 </h3>

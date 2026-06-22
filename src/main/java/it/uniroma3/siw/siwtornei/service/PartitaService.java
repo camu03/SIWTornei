@@ -42,7 +42,30 @@ public class PartitaService {
         return partitaRepository.findByTorneo(torneo);
     }
 
-    @Transactional(readOnly = true)
+    
+
+    //elimina
+    @Transactional
+    public void deletePartita(long id) {
+        partitaRepository.deleteById(id);
+    }
+}    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /* @Transactional(readOnly = true)
     public List<Partita> findByTorneoOrderByDataOraAsc(Torneo torneo) {
         return partitaRepository.findByTorneoOrderByDataOraAsc(torneo);
     }
@@ -50,11 +73,4 @@ public class PartitaService {
     @Transactional(readOnly = true)
     public List<Partita> findByTorneoOrderByDataOraDesc(Torneo torneo) {
         return partitaRepository.findByTorneoOrderByDataOraDesc(torneo);
-    }
-
-    //elimina
-    @Transactional
-    public void deletePartita(long id) {
-        partitaRepository.deleteById(id);
-    }
-}
+    }*/

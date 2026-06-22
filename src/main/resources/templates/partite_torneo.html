@@ -15,13 +15,6 @@
     </div>
 
     <div class="container listing-container">
-
-        <!--tasto per ordinare per data crescente-->
-        <a th:href="@{|/torneo/${torneo.id}/partite?sortByDateAsc=true|}" class="btn-primary">Ordina per Data Asc</a>
-        <!--tasto per ordinare per data decrescente-->
-        <a th:href="@{|/torneo/${torneo.id}/partite?sortByDateDesc=true|}" class="btn-primary">Ordina per Data Desc</a> 
-        <!--tasto per resettare l'ordinamento-->
-        <a th:href="@{|/torneo/${torneo.id}/partite|}" class="btn btn-secondary">Reset Ordinamento</a>
         
         <div th:if="${partite.isEmpty()}">
             <p class="empty-state">Il calendario per questo torneo non è ancora stato stilato.</p>

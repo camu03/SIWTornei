@@ -219,12 +219,4 @@ public class AdminController {
         return "redirect:/admin/tornei";
     }
 
-    // --- BENCHMARK FETCH STRATEGIES (analisi sperimentale - sezione 8.2 PDF) ---
-
-    @GetMapping("/benchmark")
-    public String benchmark(Model model) {
-        model.addAttribute("risultati", torneoService.benchmarkFetchStrategies());
-        return "admin/benchmark";
-    }
-
 }    
