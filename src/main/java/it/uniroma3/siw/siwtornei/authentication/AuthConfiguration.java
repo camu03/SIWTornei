@@ -26,9 +26,9 @@ public class AuthConfiguration {
         http
             .authorizeHttpRequests(authorize -> authorize
                 // 1. Pagine pubbliche accessibili a tutti
-                .requestMatchers(HttpMethod.GET, "/", "/index", "/tornei", "/torneo/**", "/api/**", "/squadre", "/squadra/**", "/partite", "/partita/**","/arbitri","/arbitro/**","/giocatore/**", "/classifica/**", "/registrazione", "/login", "/js/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/", "/index", "/tornei", "/torneo/**", "/api/**", "/squadre", "/partite", "/partita/**","/arbitri","/arbitro/**","/giocatore/**", "/classifica/**", "/registrazione", "/login", "/js/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/registrazione", "/login").permitAll()
-                
+                .requestMatchers(HttpMethod.GET, "/squadra/**").authenticated()
                 // 2. Risorse statiche e PAGINA DI ERRORE
                 .requestMatchers("/css/**", "/images/**", "/error").permitAll()
                 

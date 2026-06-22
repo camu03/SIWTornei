@@ -35,9 +35,11 @@ public class PartitaController {
 
     Torneo torneo = torneoService.findById(id);
     List<Partita> partiteDelTorneo = partitaService.findByTorneo(torneo);
+    List<Partita> partiteDelGiorno = partitaService.findPartiteDelGiorno();
     
     model.addAttribute("torneo", torneo);
     model.addAttribute("partite", partiteDelTorneo);
+    model.addAttribute("partiteOggi", partiteDelGiorno);
     return "partite_torneo";
 
     }

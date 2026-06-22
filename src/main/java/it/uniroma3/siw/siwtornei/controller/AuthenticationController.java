@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import it.uniroma3.siw.siwtornei.model.Utente;
 import it.uniroma3.siw.siwtornei.service.UtenteService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class AuthenticationController {
@@ -34,11 +36,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registrazione")
-    public String registerUser(@ModelAttribute("utente") Utente utente, Model model) {
+    public String registerUser(@ModelAttribute("utente") Utente utente, @RequestParam("confermaPassword") String confermaPassword, Model model) {
 
        
         if (utente.getRuolo() == null || utente.getRuolo().trim().isEmpty()) {
             model.addAttribute("erroreRuolo", "Campo obbligatorio: devi selezionare ADMIN o UTENTE per registrarti.");
+            return "registrazione";
+        }
+        if(utente.getPassword() == null || !utente.getPassword().equals(confermaPassword)) {
+            model.addAttribute("errorePassword", "Le password non corrispondono.");
+            model.addAttribute("utente", utente);
             return "registrazione";
         }
 
