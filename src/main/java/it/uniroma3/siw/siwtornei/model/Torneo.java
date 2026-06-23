@@ -3,6 +3,7 @@ package it.uniroma3.siw.siwtornei.model;
 import jakarta.persistence.*;
 import java.util.List;
 
+@NamedEntityGraph(name = "Torneo.squadre", attributeNodes = @NamedAttributeNode("squadre"))
 @Entity
 public class Torneo {
     

@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import it.uniroma3.siw.siwtornei.model.Torneo;
 import it.uniroma3.siw.siwtornei.repository.TorneoRepository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class TorneoService {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TorneoService.class);
 
     private final TorneoRepository torneoRepository;
     private final PartitaRepository partitaRepository;
@@ -121,5 +124,43 @@ public class TorneoService {
     @Transactional
     public void deleteTorneo(long id) {
         torneoRepository.deleteById(id);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    @Transactional(readOnly = true)
+    public void runBenchmark() {
+        benchmarkFetchStrategies();
+    }
+
+    public void benchmarkFetchStrategies() {
+        // Strategia 1: LAZY (N+1)
+        long start1 = System.nanoTime();
+        List<Torneo> torneiLazy = torneoRepository.findAll();
+        for (Torneo t : torneiLazy) {
+            if (t.getSquadre() != null) t.getSquadre().size();
+        }
+        long ms1 = (System.nanoTime() - start1) / 1_000_000;
+
+        // Strategia 2: JOIN FETCH
+        long start2 = System.nanoTime();
+        List<Torneo> torneiJoin = torneoRepository.findAllWithSquadre();
+        for (Torneo t : torneiJoin) {
+            if (t.getSquadre() != null) t.getSquadre().size();
+        }
+        long ms2 = (System.nanoTime() - start2) / 1_000_000;
+
+        // Strategia 3: EntityGraph
+        long start3 = System.nanoTime();
+        List<Torneo> torneiGraph = torneoRepository.findAllWithEntityGraph();
+        for (Torneo t : torneiGraph) {
+            if (t.getSquadre() != null) t.getSquadre().size();
+        }
+        long ms3 = (System.nanoTime() - start3) / 1_000_000;
+
+        log.info("=== BENCHMARK FETCH STRATEGIES ===");
+        log.info("LAZY (N+1 queries): {} ms — {} tornei", ms1, torneiLazy.size());
+        log.info("JOIN FETCH (1 query): {} ms — {} tornei", ms2, torneiJoin.size());
+        log.info("ENTITY GRAPH (1 query): {} ms — {} tornei", ms3, torneiGraph.size());
+        log.info("==================================");
     }
 }
