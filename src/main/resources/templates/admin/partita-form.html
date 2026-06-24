@@ -97,44 +97,52 @@
             const squadraHomeSelect = document.getElementById('squadraHomeSelect');
             const squadraAwaySelect = document.getElementById('squadraAwaySelect');
 
-            // ID delle squadre già selezionate (se stiamo modificando una partita esistente)
             const selectedHomeId = /*[[${partita.squadraHome != null ? partita.squadraHome.id : null}]]*/ null;
             const selectedAwayId = /*[[${partita.squadraAway != null ? partita.squadraAway.id : null}]]*/ null;
 
+            let tutteLeSquadre = [];
+
+            function popolaSelect() {
+                const homeId = squadraHomeSelect.value;
+                const awayId = squadraAwaySelect.value;
+
+                const prevHome = homeId || String(selectedHomeId);
+                const prevAway = awayId || String(selectedAwayId);
+
+                squadraHomeSelect.innerHTML = '<option value="">-- Squadra Home --</option>';
+                squadraAwaySelect.innerHTML = '<option value="">-- Squadra Away --</option>';
+
+                tutteLeSquadre.forEach(s => {
+                    const sid = String(s.id);
+                    if (sid !== prevAway)
+                        squadraHomeSelect.innerHTML += `<option value="${s.id}" ${sid === prevHome ? 'selected' : ''}>${s.nome}</option>`;
+                    if (sid !== prevHome)
+                        squadraAwaySelect.innerHTML += `<option value="${s.id}" ${sid === prevAway ? 'selected' : ''}>${s.nome}</option>`;
+                });
+            }
+
             function aggiornaSquadreDaTorneo() {
                 const torneoId = torneoSelect.value;
-                
+
                 if (!torneoId) {
                     squadraHomeSelect.innerHTML = '<option value="">-- Seleziona prima un torneo --</option>';
                     squadraAwaySelect.innerHTML = '<option value="">-- Seleziona prima un torneo --</option>';
                     return;
                 }
 
-                // Chiama il nostro RestController!
                 fetch('/api/tornei/' + torneoId + '/squadre')
                     .then(response => response.json())
-                    .then(squadreDelTorneo => {
-                        let htmlHome = '<option value="">-- Squadra Home --</option>';
-                        let htmlAway = '<option value="">-- Squadra Away --</option>';
-
-                        squadreDelTorneo.forEach(s => {
-                            const isHome = (s.id === selectedHomeId) ? 'selected' : '';
-                            const isAway = (s.id === selectedAwayId) ? 'selected' : '';
-                            
-                            htmlHome += `<option value="${s.id}" ${isHome}>${s.nome}</option>`;
-                            htmlAway += `<option value="${s.id}" ${isAway}>${s.nome}</option>`;
-                        });
-
-                        squadraHomeSelect.innerHTML = htmlHome;
-                        squadraAwaySelect.innerHTML = htmlAway;
+                    .then(squadre => {
+                        tutteLeSquadre = squadre;
+                        popolaSelect();
+                        squadraHomeSelect.addEventListener('change', popolaSelect);
+                        squadraAwaySelect.addEventListener('change', popolaSelect);
                     })
                     .catch(error => console.error("Errore AJAX squadre:", error));
             }
 
-            // Ascolta quando l'admin cambia il torneo dal menu a tendina
             torneoSelect.addEventListener('change', aggiornaSquadreDaTorneo);
 
-            // Se la pagina si carica e c'è già un torneo selezionato (es. in fase di modifica), filtra subito le squadre
             if (torneoSelect.value) {
                 aggiornaSquadreDaTorneo();
             }
